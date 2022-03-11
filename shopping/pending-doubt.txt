@@ -1,0 +1,7 @@
+delevery location
+product quantity max
+stock check
+shipping or other charge
+phone verify
+delivery address only mlore or anywhere
+payment failed whom to contact
