@@ -23,7 +23,7 @@
                     <div class="col-8">
                       <h4 class="text-white">
                         <?php 
-                          $rescust = mysqli_query($conn, "SELECT CM_Id FROM customer_master WHERE Status = 1");
+                          $rescust = mysqli_query($conn, "SELECT BC_Id FROM billing_customer WHERE Status = 1");
                           echo mysqli_num_rows($rescust);
                         ?>
                       </h4>
@@ -43,7 +43,7 @@
                     <div class="col-8">
                       <h4 class="text-white">
                         <?php 
-                          $resprod = mysqli_query($conn, "SELECT id FROM products WHERE status=1");
+                          $resprod = mysqli_query($conn, "SELECT PM_Id FROM product_master WHERE status=1");
                           echo mysqli_num_rows($resprod);
                         ?>
                       </h4>
@@ -213,11 +213,11 @@
                     </thead>
                     <tbody>
                         <?php
-                            $resrhight = mysqli_query($conn, "SELECT products.name, SUM(sales_temp.quantity) AS sale_quantity FROM sales_temp JOIN products ON products.id = sales_temp.product_id WHERE sales_temp.status = 1 GROUP BY products.name ORDER BY sale_quantity DESC LIMIT 5");
+                            $resrhight = mysqli_query($conn, "SELECT product_master.ProductName, SUM(sales_temp.quantity) AS sale_quantity FROM sales_temp JOIN product_master ON product_master.PM_Id = sales_temp.product_id WHERE sales_temp.status = 1 GROUP BY product_master.ProductName ORDER BY sale_quantity DESC LIMIT 5");
                             if (mysqli_num_rows($resrhight) > 0) {
                               $count = 1;
                               while ($rowhigh = mysqli_fetch_assoc($resrhight)) {
-                                echo "<tr><th>" . $count . "</th><td>" . $rowhigh['name'] . "</td><td>" . $rowhigh['sale_quantity'] . "</td></tr>";
+                                echo "<tr><th>" . $count . "</th><td>" . $rowhigh['ProductName'] . "</td><td>" . $rowhigh['sale_quantity'] . "</td></tr>";
                                 $count++;
                               }
                             }
@@ -250,11 +250,11 @@
                     </thead>
                     <tbody>
                         <?php
-                            $resrproductss = mysqli_query($conn, "SELECT categories.name AS catname, brands.name AS bname, products.name AS pname, products.image FROM products JOIN categories ON categories.id = products.category_id JOIN brands ON brands.id = products.brand_id WHERE products.status=1 ORDER BY products.id DESC LIMIT 5");
+                            $resrproductss = mysqli_query($conn, "SELECT category_master.CategoryName AS catname, brand_master.BrandName AS bname, product_master.ProductName AS pname, product_master.Image FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId WHERE product_master.Status=1 ORDER BY product_master.PM_Id DESC LIMIT 5");
                             if (mysqli_num_rows($resrproductss) > 0) {
                               $count = 1;
                               while ($rowrproductss = mysqli_fetch_assoc($resrproductss)) {
-                                echo "<tr><th>" . $count . "</th><td>" . $rowrproductss['catname'] . "</td><td>" . $rowrproductss['bname'] . "</td><td>" . $rowrproductss['pname'] . "</td><td><img class='img-avatar img-circle'  style='width:36px;height: 36px;border-radius:50%;'' src='" . $rowrproductss['image'] . "'></td></tr>";
+                                echo "<tr><th>" . $count . "</th><td>" . $rowrproductss['catname'] . "</td><td>" . $rowrproductss['bname'] . "</td><td>" . $rowrproductss['pname'] . "</td><td><img class='img-avatar img-circle'  style='width:36px;height: 36px;border-radius:50%;'' src='" . $rowrproductss['Image'] . "'></td></tr>";
                                 $count++;
                               }
                             }

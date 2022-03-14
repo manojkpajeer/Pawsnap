@@ -233,11 +233,11 @@
                             <tr>
                                 <th>#</th>
                                 <th>Image</th>
+                                <th>Code</th>
                                 <th>Parent</th>
                                 <th>Category</th>
                                 <th>Brand</th>
                                 <th>Product</th>
-                                <th>Code</th>
                                 <th>MRP</th>
                                 <th>Discount</th>
                                 <th>GST</th>
@@ -260,11 +260,11 @@
                             <tr>
                                 <th><?php echo $cnt; ?></th>
                                 <th><img src="<?php echo $row['Image']?>" class="rounded" height="50" width="50"></th>
+                                <td><?php echo $row['ProductCode']; ?></td>
                                 <td><?php if($row['ParentId']==1){echo 'Dogs';}else if($row['ParentId']==2){echo 'Cats';}else if($row['ParentId']==3){echo 'Personalise';}; ?></td>
                                 <td><?php echo $row['CategoryName']; ?></td>
                                 <td><?php echo $row['BrandName']; ?></td>
                                 <td><?php echo $row['ProductName']; ?></td>
-                                <td><?php echo $row['ProductCode']; ?></td>
                                 <td><?php echo number_format($row['Price'], 2); ?></td>
                                 <td><?php echo $row['Discount']; ?></td>
                                 <td><?php echo $row['GST']; ?></td>
