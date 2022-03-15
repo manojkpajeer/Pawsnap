@@ -61,12 +61,13 @@
         if(mysqli_query($conn, "UPDATE product_master SET CategoryId = '$_POST[category]', BrandId = '$_POST[brand]', 
         ProductName = '$_POST[name]', ProductCode = '$_POST[code]', Image = '$imagePath', Description = '$_POST[description]', 
         Price = '$_POST[price]', Discount = '$_POST[discount]', GST = '$_POST[gst]', Status = '$_POST[status]', 
-        Image1 = '$imagePath1', Image2 = '$imagePath2', Image3 = '$imagePath3'")){
+        Image1 = '$imagePath1', Image2 = '$imagePath2', Image3 = '$imagePath3' WHERE PM_Id = '$_POST[sid]'")){
 
             echo "<script>alert('Yay, Product updated successfully..');</script>";
         } else {
 
             echo "<script>alert('Oops, Unable to update product..');</script>";
+            // echo mysqli_error($conn);
         }
         
     }   
@@ -255,7 +256,7 @@
                             ?>
                             <tr>
                                 <th><?php echo $cnt; ?></th>
-                                <th><img src="<?php echo $row['Image']?>" class="rounded" height="50" width="50"></th>
+                                <th><img src="../<?php echo $row['Image']?>" class="rounded" height="50" width="50"></th>
                                 <td><?php if($row['ParentId']==1){echo 'Dogs';}else if($row['ParentId']==2){echo 'Cats';}else if($row['ParentId']==3){echo 'Personalise';}; ?></td>
                                 <td><?php echo $row['CategoryName']; ?></td>
                                 <td><?php echo $row['BrandName']; ?></td>

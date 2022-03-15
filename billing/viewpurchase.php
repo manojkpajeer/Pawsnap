@@ -86,7 +86,7 @@
 			      </thead>
 			      <tbody>
                     <?php
-                        $res1 = mysqli_query($conn, "select products.name as pname , purchase_temp.quantity, purchase_temp.price, purchase_temp.discount from purchase_temp join products on purchase_temp.product_id = products.id where purchase_temp.billno = '$row[billno]' and purchase_temp.bill_date = '$row[bill_date]' and purchase_temp.vendor_id = '$row[vendor_id]'");
+                        $res1 = mysqli_query($conn, "select product_master.ProductName as pname , purchase_temp.quantity, purchase_temp.price, purchase_temp.discount from purchase_temp join product_master on purchase_temp.product_id = product_master.PM_Id where purchase_temp.billno = '$row[billno]' and purchase_temp.bill_date = '$row[bill_date]' and purchase_temp.vendor_id = '$row[vendor_id]'");
                         if(mysqli_num_rows($res1)>0){
                             $count = 1;
                             while($row1 = mysqli_fetch_assoc($res1)){

@@ -22,8 +22,10 @@
 
     if (isset($_POST['update'])) { 
 
+        $address = addslashes($_POST['address']);
+
         if (mysqli_query($conn, "UPDATE billing_customer SET FullName = '$_POST[name]', EmailId = '$_POST[email]', Status = '$_POST[status]',
-            PhoneNo = '$_POST[phone]', SecondaryNo = '$_POST[phone2]', Address = '$_POST[address]' WHERE BC_Id = '$_POST[sid]'")) {
+            PhoneNo = '$_POST[phone]', SecondaryNo = '$_POST[phone2]', Address = '$address' WHERE BC_Id = '$_POST[sid]'")) {
 
             echo "<script>alert('Yay, Customer updated successfully..');</script>";     
         } else {
@@ -34,8 +36,10 @@
 
     if (isset($_POST['add'])) { 
 
+        $address = addslashes($_POST['address']);
+        
         if(mysqli_query($conn, "INSERT INTO billing_customer(FullName, EmailId, PhoneNo, SecondaryNo, Address, Status, DateCreate) 
-            VALUES ('$_POST[name]', '$_POST[email]', '$_POST[phone]', '$_POST[phone2]', '$_POST[address]', '$_POST[status]', NOW())")){
+            VALUES ('$_POST[name]', '$_POST[email]', '$_POST[phone]', '$_POST[phone2]', '$address', '$_POST[status]', NOW())")){
 
             echo "<script>alert('Yay, Customer added successfully..');</script>";   
         }
