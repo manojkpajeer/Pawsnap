@@ -32,6 +32,10 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-band-aid"></i></div>
                     Slider
                 </a>
+                <a class="nav-link" href="blog-data.php">
+                    <div class="sb-nav-link-icon"><i class="fas fa-blog"></i></div>
+                    Blog
+                </a>
                 <a class="nav-link" href="dogs-menu.php">
                     <div class="sb-nav-link-icon"><i class="fas fa-dog"></i></div>
                     Dogs Menu
@@ -72,11 +76,16 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-quote-left"></i></div>
                     Testimonial
                 </a>
+                <div class="sb-sidenav-menu-heading">Boarding</div>
+                <a class="nav-link" href="slot.php">
+                    <div class="sb-nav-link-icon"><i class="fa fa-table"></i></div>
+                    Slots
+                </a>
+                <a class="nav-link" href="slot-request.php">
+                    <div class="sb-nav-link-icon"><i class="fa fa-info-circle"></i></div>
+                    Requests
+                </a>
                 <div class="sb-sidenav-menu-heading">Other</div>
-                <!-- <a class="nav-link" href="subscription.php">
-                    <div class="sb-nav-link-icon"><i class="fas fa-sliders-h"></i></div>
-                    Subscriptions
-                </a> -->
                 <a class="nav-link" href="queries.php">
                     <div class="sb-nav-link-icon"><i class="fa fa-question"></i></div>
                     Queries

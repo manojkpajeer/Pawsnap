@@ -17880,6 +17880,7 @@ fieldset:disabled .btn {
     --box-shadow: 0 25px 90px 0 rgb(4 2 0 / 3%);
     --iframe-filter: grayscale(0%);
     --bg-grey: #f7f6f6;
+    --bg-grey2: #f3f0f0;
     --bg-lightgrey: #f1f3f8;
     --layer: rgb(0 6 0 / 60%);
     --footer-bg: #060500;
@@ -17900,6 +17901,7 @@ fieldset:disabled .btn {
     --box-shadow: 0 25px 98px 0 rgb(4 2 0 / 9%);
     --iframe-filter: grayscale(100%);
     --bg-grey: #0c0c0c;
+    --bg-grey2: #0c0c0c;
     --bg-lightgrey: #131617;
     --layer: rgb(0 6 0 / 75%);
     --footer-bg: #000;
@@ -23816,7 +23818,7 @@ html[xmlns] .flexslider .slides {
 }
 
 .w3l-blog .card-body.blog-details {
-    padding: 2em 2em 0em 2em;
+    padding: 1em 1em 0em 1em;
 }
 
 .w3l-blogpost-content .card,
@@ -23904,11 +23906,10 @@ html[xmlns] .flexslider .slides {
 
 .w3l-blog a.blog-desc {
     display: block;
-    font-size: 24px;
-    line-height: 34px;
+    font-size: 21px;
+    line-height: 30px;
     font-weight: 700;
     color: var(--heading-color);
-    margin-top: 10px;
 }
 
 .w3l-blog a.blog-desc:hover {
@@ -23926,7 +23927,6 @@ html[xmlns] .flexslider .slides {
     font-size: 13px;
     color: var(--primary-color);
     background: var(--bg-grey);
-    padding: 2px 15px;
     border-radius: 4px;
 }
 
@@ -23961,8 +23961,8 @@ html[xmlns] .flexslider .slides {
 
 @media only screen and (max-width: 375px) {
     .w3l-blog a.blog-desc {
-        font-size: 18px;
-        line-height: 26px;
+        font-size: 16px;
+        line-height: 24px;
     }
 
     .w3l-blog p.sample a {
@@ -23977,7 +23977,7 @@ html[xmlns] .flexslider .slides {
 
 .author {
     display: grid;
-    grid-template-columns: 40px 1fr auto;
+    grid-template-columns: 1fr auto;
     grid-gap: 10px;
 }
 
@@ -24031,10 +24031,8 @@ ul.page-pagination li a.next {
     display: block;
     padding: 10px 18px;
     background-color: var(--bg-color);
-    border: 1px solid var(--border-color-light);
     border-radius: var(--border-radius);
     font-weight: 700;
-    color: var(--font-color);
     transition: background-color .15s linear, color .15s linear;
     box-shadow: 0 25px 98px 0 rgba(19, 19, 19, 0.03);
 }
@@ -25006,7 +25004,7 @@ div#owl-demo2 .owl-dots {
 .contact-grids textarea {
     width: 100%;
     color: var(--font-color);
-    background: var(--bg-grey);
+    background: var(--bg-grey2);
     font-size: 18px;
     line-height: 28px;
     font-weight: normal;

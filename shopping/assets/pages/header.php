@@ -109,11 +109,19 @@
                         }
                         ?>
                         
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.php">Paw Social</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#Pages" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Our Service <span class="fa fa-angle-down ms-1"></span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item pt-2" href="boarding.php">Boarding</a></li>
+                            <li><a class="dropdown-item" href="#">Grooming</a></li>
+                            <li><a class="dropdown-item" href="#">Veterinary</a></li>
+
+                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.php">Contact</a>
+                        <a class="nav-link" href="blog.php">Blog</a>
                     </li>
                     <li class="nav-item search-right">
                         <a href="#search" class="btn search-btn" title="search"><span class="fas fa-search me-2" aria-hidden="true"></span></a>
