@@ -115,8 +115,8 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item pt-2" href="boarding.php">Boarding</a></li>
-                            <li><a class="dropdown-item" href="#">Grooming</a></li>
-                            <li><a class="dropdown-item" href="#">Veterinary</a></li>
+                            <li><a class="dropdown-item" href="grooming.php">Grooming</a></li>
+                            <li><a class="dropdown-item" href="veterinary.php">Veterinary</a></li>
 
                         </ul>
                     </li>
@@ -128,9 +128,9 @@
                         <div id="search" class="pop-overlay">
                             <div class="popup">
                                 <h3 class="title-w3l two mb-4 text-left">Search Here</h3>
-                                <form action="result.php" method="POST" class="search-box d-flex position-relative">
+                                <form action="result.php" method="GET" class="search-box d-flex position-relative">
                                     <input type="search" placeholder="Enter Keyword here" name="searchitem" required="required" autofocus="">
-                                    <button type="submit" class="btn" name="pawsearch"><span class="fas fa-search" aria-hidden="true"></span></button>
+                                    <button type="submit" class="btn"><span class="fas fa-search" aria-hidden="true"></span></button>
                                 </form>
                             </div>
                             <a class="close" href="#close">×</a>

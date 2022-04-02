@@ -7,96 +7,111 @@
     require_once './assets/pages/header.php';
     require_once './assets/pages/cart.php';
 
-    if(empty($_SESSION['is_customer_login'])){
-
-        echo "<script>alert('Oops, Kindly login to proceed..');location.href='../login.php';</script>";
-    }
-
-    if(isset($_POST['submit'])){
-
-        $customerId = $_SESSION['user_id'];
-
-        if(empty($_FILES['pimage']['name'])){
-
-            if(mysqli_query($conn, "INSERT INTO boarding_master(OwnerName, PhoneNumber, Location, BoardingDate, Recomened, PetName, 
-                PetAge, PetHabbit, VaccinationDetails, IllnessDetails, BoardingStatus, DateCreated, UserId, BoardingRemarks)VALUES('$_POST[oname]', '$_POST[ophone]', 
-                '$_POST[olocation]', '$_POST[odate]', '$_POST[orecomend]', '$_POST[pname]', '$_POST[page]', '$_POST[phabbit]', 
-                '$_POST[pvaccine]', '$_POST[pillness]', 'Requested', NOW(), '$customerId', 'Pending admin approval')")){
-
-                echo "<script>location.href='view-boarding.php';</script>";
-            } else{
-
-                echo "<script>alert('Oops, Unable to process..');</script>";
-            }
-        }else{
-            
-            $image_path = "assets/images/boarding/" . time() . "." . pathinfo($_FILES['pimage']['name'], PATHINFO_EXTENSION);
-            if(move_uploaded_file($_FILES['pimage']['tmp_name'], "admin/".$image_path)){
-
-                if(mysqli_query($conn, "INSERT INTO boarding_master(OwnerName, PhoneNumber, Location, BoardingDate, Recomened, PetName, 
-                    PetAge, PetHabbit, VaccinationDetails, IllnessDetails, BoardingStatus, DateCreated, PetImage, UserId, BoardingRemarks)VALUES('$_POST[oname]', '$_POST[ophone]', 
-                    '$_POST[olocation]', '$_POST[odate]', '$_POST[orecomend]', '$_POST[pname]', '$_POST[page]', '$_POST[phabbit]', 
-                    '$_POST[pvaccine]', '$_POST[pillness]', 'Requested', NOW(), '$image_path', '$customerId', 'Pending admin approval')")){
-
-                    echo "<script>location.href='view-boarding.php';</script>";
-                } else{
-
-                    echo "<script>alert('Oops, Unable to process your request..');</script>";
-                }
-            } else{
-
-                echo "<script>alert('Oops, Unable to process your request..');</script>";
-            }
-        }
-    }
-
 ?>    
-    <section class="w3l-test my-3">
-        <div class="container py-lg-4 py-md-4 pt-5 pb-5">
-            <div class="row">
-                <div class="col-lg-9">
-                    <h3 class="title-w3l">The Best Brording service.</h3>
+    
+    <div class="w3l-3-grids" id="about-1">
+        <div class="container py-md-5 py-2 pb-0">
+            <!--/row-1-->
+            <div class="w3abin-top text-center">
+                <div class="title-content">
+                    <h6 class="title-subw3hny mb-1">Boarding</h6>
+                    <h3 class="title-w3l">The Best Boarding Service</h3>
                 </div>
-                <div class="col-lg-3">
-                    <h3 class="title-w3l float-end"><a class="btn btn-primary" href="view-boarding.php">Your Request</a></h3>
-                </div>
+                <p class="mt-3">Lorem ipsum viverra feugiat. Pellen tesque libero ut justo,
+                    ultrices in ligula. Semper at tempufddfel. Lorem ipsum dolor sit amet
+                    elit ipsum dolor.Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
             </div>
+        </div>
+    </div>
+    
+    <section id="counts" class="w3lcounts pb-5">
+        <div class="container pb-md-5 pb-3">
             <div class="row">
-                <div class="contact-grids">
-                    <form method="post" class="signin-form" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-lg-6 py-sm-4">
-                                <h6 class="title-subw3hny">Owner Details</h6>
-                                <input type="text" name="oname" placeholder="Your Name*" class="contact-input mt-3" required="">
-                                <input type="text" name="ophone" placeholder="Your Phone Number*" title="Enter valid phone number" class="contact-input" required="" pattern="[0-9]{6,13}" maxlength="13">
-                                <input type="text" name="olocation" placeholder="Your Location*" class="contact-input" required="">
-                                <input type="date" name="odate" placeholder="Boarding Date*" value="<?php echo date('Y-m-d');?>" class="contact-input" required="" min="<?php echo date('Y-m-d'); ?>">
-                                <input type="text" name="orecomend" placeholder="Who Recommended Us*" class="contact-input" required="">
-                            </div>
-                            <div class="col-lg-6 py-sm-4 pt-0">
-                                <h6 class="title-subw3hny">Pet Details</h6>
-                                <input type="text" name="pname" placeholder="Pet Name*" class="contact-input mt-3" required="">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <input type="text" name="page" placeholder="Pet Age*" class="contact-input" required="">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <input type="file" name="pimage" placeholder="Pet Image*" class="contact-input" accept="image/*">
-                                    </div>
-                                </div>
-                                <input type="text" name="phabbit" placeholder="Any Food Habbit*" class="contact-input" required="">
-                                <input type="text" name="pvaccine" placeholder="Vaccination Details*" class="contact-input" required="">
-                                <input type="text" name="pillness" placeholder="Any Recent Illness*" class="contact-input" required="">
-                            </div>
-                        </div>
-                        <div class="submit-w3l-button text-lg-right">
-                                <button type="submit" class="btn btn-style btn-primary" name="submit">Submit</button>
-                            </div>
-                    </form>
+                <div class="col-lg-3 col-md-6 w3stats_info counter_grid">
+                    <div class="count-box">
+                        <i class="fas fa-users"></i>
+                        <p class="counter">200+</p>
+                        <p>Happy Clients</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mt-5 mt-md-0 w3stats_info counter_grid">
+                    <div class="count-box">
+                        <i class="far fa-images"></i>
+                        <p class="counter">20+</p>
+                        <p>Boarding Slots</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mt-5 mt-lg-0 w3stats_info counter_grid">
+                    <div class="count-box">
+                        <i class="fas fa-headset"></i>
+                        <p class="counter">24/7</p>
+                        <p>Hours Of Support</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mt-5 mt-lg-0 w3stats_info counter_grid">
+                    <div class="count-box">
+                        <i class="fas fa-user-tie"></i>
+                        <p class="counter">10+</p>
+                        <p>Hard Workers</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+    
+    <section class="w3l-index5 py-5">
+        <div class="container py-md-3">
+            <div class="w3l-project-in">
+                <div class="bottom-info">
+                    <div class="header-section title-content-two pe-lg-5">
+                        <h6 class="title-subw3hny mb-1">Our Special Offer</h6>
+                        <h3 class="title-w3l two mb-4">Get Up To 50% Off <br>Enjoy The Season Sale
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="boarding" class=" w3l-3-grids py-5">
+        <div class="container py-md-5">
+            <div class="title-content text-center">
+                <h6 class="title-subw3hny mb-1">Get Started</h6>
+                <h3 class="title-w3l mb-5">Ready to get started?</h3>
+            </div>
+            <div class="row">
+            <div class="col-md-6 mt-md-0">
+                    <div class="grids3-info position-relative">
+                        <a href="book-boarding.php" class="d-block zoom"><img src="assets/images/book-image.jpg" alt="" class="img-fluid news-image"></a>
+                        <div class="w3-grids3-info">
+                            <h4 class="gdnhy-1"><a href="book-boarding.php">Book A Slot For Your<br>Pet</a>
+                                <a class="w3item-link btn btn-style mt-4" href="book-boarding.php">
+                                    Book Now <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-md-0 mt-4 grids3-info2">
+                    <div class="grids3-info second position-relative">
+                        <a href="view-boarding.php" class="d-block zoom"><img src="assets/images/pet-status.jpg" alt="" class="img-fluid news-image"></a>
+                        <div class="w3-grids3-info second">
+                            <h4 class="gdnhy-1"><a href="view-boarding.php">View Your Booking <br>Status</a>
+                                <a class="w3item-link btn btn-style mt-4" href="view-boarding.php">
+                                    View <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </h4>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 <?php
     require_once './assets/pages/footer.php';
 ?>

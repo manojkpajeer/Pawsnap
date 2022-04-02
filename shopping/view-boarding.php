@@ -9,7 +9,7 @@
 
     if(empty($_SESSION['is_customer_login'])){
 
-        echo "<script>alert('Oops, Kindly login to proceed..');location.href='../login.php';</script>";
+        echo "<script>alert('Oops, Kindly login to proceed..');location.href='boarding.php#boarding';</script>";
     }
 
     $customerId = $_SESSION['user_id'];
@@ -32,8 +32,8 @@
 ?>    
 <section class="w3l-blog bloghny-page">
     <div class="blog py-3" id="Newsblog">
-        <div class="container py-lg-5 py-md-4 py-2">
-            <h3 class="title-w3l mb-4">Your Request.</h3>
+        <div class="container pb-lg-5 py-md-4 py-2">
+            <h3 class="title-w3l mb-4">Your Boarding Requests.</h3>
         <?php 
             $resBlogData = mysqli_query($conn, $sql);
             if(mysqli_num_rows($resBlogData)>0){
@@ -66,7 +66,7 @@
                     </div>
                 <?php
             } else {
-                echo "<h5>No blog found..</h5>";
+                echo "<h5>No booking found..</h5>";
             }
         ?>
         </div>

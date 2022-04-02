@@ -53,7 +53,7 @@
                             <section class="w3l-witemshny-main">
                                 <div class="container">
                                     <?php
-                                    $resData2 = mysqli_query($conn, "SELECT CategoryName, CT_Id, CategoryImage FROM category_master WHERE Status = 1 AND ParentId = '$parentId'");
+                                    $resData2 = mysqli_query($conn, "SELECT CategoryName, CT_Id, CategoryImage FROM category_master WHERE Status = 1 AND ParentId = '$parentId' LIMIT 4");
                                     if(mysqli_num_rows($resData2)>0){
                                     ?>
                                         <h3 class="title-w3l mt-5 pt-lg-4">Right Picks For You</h3>

@@ -118,8 +118,8 @@
         $sql2 .= " ORDER BY Price DESC";
     }
 
-    $maxPage = $page * 25;
-    $minPage = $maxPage - 25;
+    $maxPage = $page * 30;
+    $minPage = $maxPage - 30;
 
     $sql3 = $sql2 . " LIMIT $minPage, $maxPage";
 
@@ -303,7 +303,7 @@
                                 <li class="prev"><a href="products.php?pref=<?php echo $pref;?>&source=<?php echo $source; ?>&sort=<?php echo $sort;?>&discount=<?php echo $discount;?>&page=1"><span class="fa fa-angle-double-left"></span></a></li>
                                 <?php
                                 
-                                    $forCount = ceil($rowCount / 25);    
+                                    $forCount = ceil($rowCount / 30);    
                                     for($i=1;$i<=$forCount;$i++){
                                         ?>
                                             <li><a href="products.php?pref=<?php echo $pref;?>&source=<?php echo $source; ?>&sort=<?php echo $sort;?>&discount=<?php echo $discount;?>&page=<?php echo $i;?>" class="<?php if($page == $i){echo 'active';}?>"><?php echo $i;?></a></li>

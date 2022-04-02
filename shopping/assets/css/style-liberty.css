@@ -17870,6 +17870,7 @@ fieldset:disabled .btn {
     --font-color: #888;
     --bg-color: #fff;
     --heading-color: #2b2d42;
+    --heading-color2: #eee;
     --primary-dark: #212529;
     --border-radius: 4px;
     --border-radius-full: 35px;
@@ -17894,6 +17895,7 @@ fieldset:disabled .btn {
     --font-color: #c2c2c2;
     --bg-color: #131212;
     --heading-color: #eee;
+    --heading-color2: #eee;
     --border-color: rgba(255, 255, 255, 0.2);
     --border-color-light: rgba(255, 255, 255, 0.1);
     --nav-color: #fff;
@@ -18517,7 +18519,7 @@ a.dropdown-item.active {
 
 .navbar .search-right .popup form input[type="search"] {
     font-size: 18px;
-    color: var(--heading-color);
+    color: var(--heading-color2);
     border: none;
     background: transparent;
     padding: 18px 50px 18px 0px;
@@ -20492,7 +20494,7 @@ button.owl-next {
 /*--/w3l-3-grids--*/
 /*--/video--*/
 .w3l-index5 {
-    background: url(../images/video-back.jpg) no-repeat center;
+    background: url(../images/boarding-banner1.jpg) no-repeat center;
     -ms-background-size: cover;
     background-size: cover;
     z-index: 0;
@@ -21480,7 +21482,7 @@ pre {
 /*--//error--*/
 /*--/inner-banner--*/
 .inner-banner {
-    background: url(../images/banner3.jpg) no-repeat center;
+    background: url(../images/boarding-back.jpg) no-repeat center;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -25001,6 +25003,7 @@ div#owl-demo2 .owl-dots {
 }
 
 .contact-grids input,
+.contact-grids select,
 .contact-grids textarea {
     width: 100%;
     color: var(--font-color);
@@ -25145,6 +25148,7 @@ div#owl-demo2 .owl-dots {
     }
 
     .contact-grids input,
+    .contact-grids select,
     .contact-grids textarea {
         padding: 15px 20px;
     }

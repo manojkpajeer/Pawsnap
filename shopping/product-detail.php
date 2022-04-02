@@ -96,7 +96,7 @@
             ?>
                 <section class="w3l-ecommerce-main">
                     <div class="ecom-contenthny w3l-ecommerce-main-inn py-5">
-                        <div class="container pt-lg-5">
+                        <div class="container">
                             <div class="sp-store-single-page row">
                                 <div class="col-lg-5 single-right-left">
                                     <div class="flexslider1">

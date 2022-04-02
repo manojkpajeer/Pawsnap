@@ -96,14 +96,7 @@
             $resData = mysqli_query($conn, "SELECT category_master.CategoryName, category_master.CT_Id, category_master.CategoryImage FROM category_card JOIN category_master ON category_master.CT_Id = category_card.CategoryId WHERE category_card.Status = 1 AND category_master.Status = 1 LIMIT 6");
             if(mysqli_num_rows($resData)>0){
             ?>
-                    <div class="row">
-                        <div class="col-xl-8 col-md-8 col-8">
-                            <h3 class="title-w3l">Deals Of The Day</h3>
-                        </div>
-                        <div class="col-xl-4 col-md-4 col-4 text-end">
-                            <a style="color: #ef233c;" href="deals-day.php">View All</a>
-                        </div>
-                    </div>
+                    <h3 class="title-w3l">Deals Of The Day</h3>
                     <div class="witemshny-grids row mt-lg-3">
                         <?php
                             while($rowData = mysqli_fetch_assoc($resData)) {
@@ -276,7 +269,7 @@
                         <div class="container pb-lg-5">
                             <div class="row">
                                 <div class="col-xl-8 col-md-8 col-8">
-                                    <h3 class="title-w3l">Top Picks For You</h3>
+                                    <h3 class="title-w3l">Our Popular products</h3>
                                     <p>Handpicked Favourites just for you</p>
                                 </div>
                                 <div class="col-xl-4 col-md-4 col-4 text-end">
