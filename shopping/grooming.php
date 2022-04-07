@@ -7,6 +7,23 @@
     require_once './assets/pages/header.php';
     require_once './assets/pages/cart.php';
 
+    if(isset($_POST['request'])){
+        if(!empty($_SESSION['is_customer_login'])){
+
+            $customerId = $_SESSION['user_id'];
+
+            if(mysqli_query($conn, "INSERT INTO grooming_request (DateCreate, GroomingStatus, UserName, UserPhone, UserAddress, 
+                AppointmentDate, ServiceId, Remarks, UserId) VALUES (NOW(), 'Requested', '$_POST[name]', '$_POST[phone]', '$_POST[address]', 
+                '$_POST[date]', '$_POST[service]', 'Your request sent to admin.', '$customerId')")){
+                echo "<script>alert('Yay, Your request has been submitted successfully.');location.href='view-request.php';</script>";
+            }else {
+                echo "<script>alert('Oops, Unable to submit your request.');</script>";
+            }
+        }else{
+            echo "<script>alert('Oops, Kindly login to proceed..');</script>";
+        }
+    }
+
 ?>    
     
     <div class="w3l-3-grids" id="about-1">
@@ -73,29 +90,37 @@
     <section class="w3l-contact-2" id="contact">
         <div class="container py-lg-4 py-md-3 py-2">
             <div class="title-content text-center">
-                <h6 class="title-subw3hny mb-1">Booking</h6>
-                <h3 class="title-w3l mb-5">Make an Appointment!</h3>
+                <div class="row">
+                    <div class="col-lg-11">
+                        <h6 class="title-subw3hny mb-1">Booking</h6>
+                        <h3 class="title-w3l mb-5">Make an Appointment!</h3>
+                    </div>
+                    <div class="col-lg-1">
+                        <a class="title-subw3hny" href="view-request.php">Your Booking</a>
+                    </div>
+                </div>
             </div>
 
             <div class="contact-grids">
                 <div class="contact-right mt-lg-4">
-                    <form action="grooming-confirm.php" method="post" class="signin-form row">
+                    <form method="post" class="signin-form row">
                         <div class="col-lg-6">
                             <label class="form-lable">Service Type:</label>
-                            <select class="contact-input" required name="service" onchange="getTotal(this)">
+                            <select class="contact-input" required name="service" onchange="getTotal(this)" id="service">
                                 <option value="">Choose Service</option>
-                                <option value="Bath With Shampoo & Conditioner">Bath With Shampoo & Conditioner</option>
-                                <option value="Nail Clipping">Nail Clipping</option>
-                                <option value="Ear Cleaning">Ear Cleaning</option>
-                                <option value="Eyes Cleaning">Eyes Cleaning</option>
-                                <option value="Paw Massage">Paw Massage</option>
-                                <option value="Combing/Brushing">Combing/Brushing</option>
-                                <option value="Hair Styling/Trimming">Hair Styling/Trimming</option>
+                                <?php
+                                    $resService = mysqli_query($conn, "SELECT SR_Id, ServiceName FROM service_type WHERE ServiceStatus = 1");
+                                    if(mysqli_num_rows($resService)>0){
+                                        while($rowService = mysqli_fetch_assoc($resService)){
+                                            echo "<option value='$rowService[SR_Id]'>$rowService[ServiceName]</option>";
+                                        }
+                                    }
+                                ?>
                             </select>
                         </div>
                         <div class="col-lg-6">
                             <label class="form-lable">Service Price:</label>
-                            <input type="text" name="total" value="0.00" class="contact-input" id="total" disabled>
+                            <input type="text" name="total" class="contact-input" id="total" readonly value="0.00">
                         </div>
                         <div class="col-lg-6">
                             <label class="form-lable">Appointment Date:</label>
@@ -110,10 +135,10 @@
                             <input type="text" name="phone" class="contact-input" required="" placeholder="Enter your phone number." pattern="[0-9]{6,13}" maxlength="13" title="Kindly enter valid phone number.">
                         </div>
                         <div class="form-input"><label class="form-lable">Your Address:</label>
-                            <textarea name="address"placeholder="Enter your address." required=""></textarea>
+                            <textarea name="address" placeholder="Enter your address." required=""></textarea>
                         </div>
                         <div class="submit-w3l-button text-lg-right">
-                            <button class="btn btn-style btn-primary">Submit request</button>
+                            <button class="btn btn-style btn-primary" name="request">Submit request</button>
                         </div>
                     </form>
                 </div>
@@ -124,21 +149,21 @@
     <script>
         function getTotal(sel) {
             var serviceData = sel.value;
-            if(serviceData == 'Bath With Shampoo & Conditioner'){
-                document.getElementById("total").value = "1300.00";
-            } else if(serviceData == 'Nail Clipping'){
-                document.getElementById("total").value = "600.00";
-            } else if(serviceData == 'Ear Cleaning'){
-                document.getElementById("total").value = "800.00";
-            } else if(serviceData == 'Eyes Cleaning'){
-                document.getElementById("total").value = "500.00";
-            } else if(serviceData == 'Paw Massage'){
-                document.getElementById("total").value = "1000.00";
-            } else if(serviceData == 'Combing/Brushing'){
-                document.getElementById("total").value = "1500.00";
-            } else if(serviceData == 'Hair Styling/Trimming'){
-                document.getElementById("total").value = "300.00";
-            }
+
+            $.ajax({
+                    url: 'assets/ajax/service-data.php',
+                    method: 'POST',
+                    data: {
+                        serviceId: serviceData
+                    },
+                    success: function(data) {
+                        document.getElementById("total").value = data;
+                    },
+                    error: function() {
+                        alert('j');
+                        $("#service").val(0).change();
+                    }
+                })
         }
     </script>
 

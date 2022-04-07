@@ -44,7 +44,7 @@
 
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <head>
-  <title>Pawsanp - Billing Login</title>
+  <title>Paws Fur And Tail - Billing Login</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -63,7 +63,7 @@
           <div class="col-sm-12">
             <div class="auth-box card" >
               <div class="text-center">
-                  <h2 class="mt-4"><strong>PAW<span class="text-danger">SNAP</span></strong></h2>
+                  <h2 class="mt-4"><strong>PAWS FUR AND<span class="text-danger"> TAIL</span></strong></h2>
               </div> 
               <div class="card-block" >
                 <div class="row m-b-20">

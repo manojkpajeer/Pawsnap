@@ -61,7 +61,7 @@
         if(mysqli_query($conn, "UPDATE product_master SET CategoryId = '$_POST[category]', BrandId = '$_POST[brand]', 
         ProductName = '$_POST[name]', ProductCode = '$_POST[code]', Image = '$imagePath', Description = '$_POST[description]', 
         Price = '$_POST[price]', Discount = '$_POST[discount]', GST = '$_POST[gst]', Status = '$_POST[status]', 
-        Image1 = '$imagePath1', Image2 = '$imagePath2', Image3 = '$imagePath3' WHERE PM_Id = '$_POST[sid]'")){
+        Image1 = '$imagePath1', Image2 = '$imagePath2', Image3 = '$imagePath3', ProductQuantity = '$_POST[quantity]' WHERE PM_Id = '$_POST[sid]'")){
 
             echo "<script>alert('Yay, Product updated successfully..');</script>";
         } else {
@@ -87,9 +87,9 @@
         if($bannerMove && $imageMove1 && $imageMove2 && $imageMove3){
 
             if(mysqli_query($conn, "INSERT INTO product_master (CategoryId, BrandId, ProductName, ProductCode, Image, 
-            Description, Price, Discount, GST, Status, DateCreate, Image1, Image2, Image3) VALUES ('$_POST[category]', 
+            Description, Price, Discount, GST, Status, DateCreate, Image1, Image2, Image3, ProductQuantity) VALUES ('$_POST[category]', 
             '$_POST[brand]', '$_POST[name]', '$_POST[code]', '$bannerPath', '$_POST[description]', '$_POST[price]', 
-            '$_POST[discount]', '$_POST[gst]', '$_POST[status]', NOW(), '$imagePath1', '$imagePath2', '$imagePath3')")){
+            '$_POST[discount]', '$_POST[gst]', '$_POST[status]', NOW(), '$imagePath1', '$imagePath2', '$imagePath3', '$_POST[quantity]')")){
 
                 echo "<script>alert('Yay, Product added successfully..');</script>";   
             }
@@ -196,9 +196,13 @@
                                     <label class="form-label">Payable Price</label>
                                     <input class="form-control" id="ptotal" name="tprice" readonly value="0">
                                 </div>
-                                <div class="col-md-6 mt-3">
+                                <div class="col-md-4 mt-3">
                                     <label class="form-label">Description</label>
                                     <textarea class="form-control" name="description"></textarea>
+                                </div>
+                                <div class="col-md-4 mt-3">
+                                    <label class="form-label">Quantity</label>
+                                    <input class="form-control" id="pquantity" name="quantity" required min="0" type="number" value="0">
                                 </div>
                                 <div class="col-md-4 mt-3">
                                     <label class="form-label">Status</label>
@@ -234,6 +238,7 @@
                                 <th>Category</th>
                                 <th>Brand</th>
                                 <th>Product</th>
+                                <th>Quantity</th>
                                 <th>Code</th>
                                 <th>MRP</th>
                                 <th>Discount</th>
@@ -247,7 +252,7 @@
                         <tbody>
 
                         <?php
-                        $resData = mysqli_query($conn, "SELECT product_master.PM_Id, product_master.Description, product_master.CategoryId, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId ORDER BY product_master.PM_Id DESC");
+                        $resData = mysqli_query($conn, "SELECT product_master.PM_Id, product_master.ProductQuantity, product_master.Description, product_master.CategoryId, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId ORDER BY product_master.PM_Id DESC");
                         if(mysqli_num_rows($resData)>0)
                         {
                             $cnt = 1;
@@ -261,6 +266,7 @@
                                 <td><?php echo $row['CategoryName']; ?></td>
                                 <td><?php echo $row['BrandName']; ?></td>
                                 <td><?php echo $row['ProductName']; ?></td>
+                                <td><?php echo $row['ProductQuantity']; ?></td>
                                 <td><?php echo $row['ProductCode']; ?></td>
                                 <td><?php echo number_format($row['Price'], 2); ?></td>
                                 <td><?php echo $row['Discount']; ?></td>
@@ -375,7 +381,7 @@
                                                     <label class="form-label">Payable Price</label>
                                                     <input class="form-control" id="ptotal<?php echo $row['PM_Id']?>" name="tprice" readonly value="<?php echo number_format($row['Price'] - ($row['Price'] * ($row['Discount']/100)), 2);?>">
                                                 </div>
-                                                <div class="col-md-6 mt-3">
+                                                <div class="col-md-4 mt-3">
                                                     <label class="form-label">Description</label>
                                                     <textarea class="form-control" name="description"><?php echo $row['Description'];?></textarea>
                                                 </div>
@@ -385,8 +391,11 @@
                                                 <input type="hidden" name="img1" value="<?php echo $row['Image1'];?>">
                                                 <input type="hidden" name="img2" value="<?php echo $row['Image2'];?>">
                                                 <input type="hidden" name="img3" value="<?php echo $row['Image3'];?>">
-
-                                                <div class="col-md-6 mt-3">
+                                                <div class="col-md-4 mt-3">
+                                                    <label class="form-label">Quantity</label>
+                                                    <input class="form-control" id="pquantity" name="quantity" required min="0" type="number" value="<?php echo $row['ProductQuantity'];?>">
+                                                </div>
+                                                <div class="col-md-4 mt-3">
                                                     <label class="form-label">Status</label>
                                                     <select class="form-control" required name="status" title="Please choose status">
                                                         <option value="">Select</option>

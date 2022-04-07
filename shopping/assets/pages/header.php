@@ -2,7 +2,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light stroke py-lg-0">
             <h1><a class="navbar-brand pe-xl-5 pe-lg-4" href="index.php">
-                    <span class="w3yellow">Paw</span>Snap
+                    <span class="w3yellow">Paws </span>FUR
                 </a></h1>
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
@@ -102,8 +102,15 @@
 
                         if(!empty($_SESSION['is_customer_login'])){
                             ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="order.php">Orders</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownsa" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Account <span class="fa fa-angle-down ms-1"></span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownsa">
+                                    <li><a class="dropdown-item pt-2" href="order.php">Orders</a></li>
+                                    <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                                    <li><a class="dropdown-item" href="settings.php">Settings</a></li>
+                                </ul>
                             </li>
                             <?php
                         }

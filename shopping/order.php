@@ -104,7 +104,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-footer">
                                     <div class="row">
                                         <div class="col-lg-9 col-sm-12 col-md-9 mt-2">
                                             <strong>Order Status : </strong>

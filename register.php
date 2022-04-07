@@ -127,7 +127,7 @@
                 <label>Email ID</label>
             </div>
             <div class="form-floating">
-                <input type="text" class="form-control" name="phone" placeholder="Phone No" pattern="[6-9]{1}[0-9]{9}" title="Phone number start with 6-9 and remaing 9 digit with 0-9" maxlength="10">
+                <input type="text" class="form-control" name="phone" placeholder="Phone No" pattern="[0-9]{6,13}" title="Only numbers are accepted and it should be 6 to 13 digits in length" maxlength="13">
                 <label>Phone No</label>
             </div>
             <div class="form-floating">

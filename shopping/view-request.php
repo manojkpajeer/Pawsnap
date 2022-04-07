@@ -9,12 +9,13 @@
 
     if(empty($_SESSION['is_customer_login'])){
 
-        echo "<script>alert('Oops, Kindly login to proceed..');location.href='boarding.php#boarding';</script>";
+        echo "<script>alert('Oops, Kindly login to proceed..');location.href='grooming.php';</script>";
     }
 
     $customerId = $_SESSION['user_id'];
 
-    $sql = "SELECT * FROM boarding_master WHERE UserId = '$customerId' ORDER BY BM_Id DESC";
+    $sql = "SELECT gr.*, st.ServiceName, st.ServicePrice FROM grooming_request gr, service_type st 
+            WHERE st.SR_Id = gr.ServiceId AND gr.UserId = '$customerId' ORDER BY GR_Id DESC";
 
     $resCount = mysqli_query($conn, $sql);
     $rowCount = mysqli_num_rows($resCount);
@@ -33,7 +34,7 @@
 <section class="w3l-blog bloghny-page">
     <div class="blog py-3" id="Newsblog">
         <div class="container pb-lg-5 py-md-4 py-2">
-            <h3 class="title-w3l mb-4">Your Boarding Requests.</h3>
+            <h3 class="title-w3l mb-4">Your Requests.</h3>
         <?php 
             $resBlogData = mysqli_query($conn, $sql);
             if(mysqli_num_rows($resBlogData)>0){
@@ -46,12 +47,12 @@
                                 <div class="card h-100">
                                     <div class="card-body blog-details pb-3">
                                         <div class="price-review d-flex justify-content-between mb-1 align-items-center">
-                                            <p><?php echo date_format(date_create($rowBlogData['DateCreated']), 'd, M Y');?></p>
+                                            <p><?php echo date_format(date_create($rowBlogData['DateCreate']), 'd, M Y');?></p>
                                         </div>
-                                        Pet Name:  <?php echo $rowBlogData['PetName'];?> <br>
-                                        Boarding Date:  <?php echo date_format(date_create($rowBlogData['BoardingDate']), 'd, M Y');?> <br>
-                                        Status: <?php echo $rowBlogData['BoardingStatus'];?><br>
-                                        <small class="">Remarks: <?php echo $rowBlogData['BoardingRemarks'];?></small>
+                                        Service:  <?php echo $rowBlogData['ServiceName'];?> <br>
+                                        Total Amount:  <?php echo $rowBlogData['ServicePrice'];?> <br>
+                                        Status: <?php echo $rowBlogData['GroomingStatus'];?><br>
+                                        <small class="">Remarks: <?php echo $rowBlogData['Remarks'];?></small>
                                     </div>
                                 </div>
                             </div>
@@ -61,13 +62,13 @@
                     </div>
                     <div class="pagination-wrapper mt-5 pt-lg-3">
                         <ul class="page-pagination">
-                            <li><a class="next" href="view-boarding.php?page=<?php if($page>1){echo $page-1;}else{echo $page;}?>" <?php if($page<=1){echo "onclick='return false;' style='border: 1px solid #e4e6e5;color: #888;'";}else{echo "style='color: var(--primary-color);border: 1px solid var(--primary-color);'";}?>>Prev <span class="fa fa-angle-right"></span></a></li>
-                            <li><a class="next" href="view-boarding.php?page=<?php echo $page+1;?>" <?php if(($rowCount/(12*$page))<1){echo "onclick='return false;' style='border: 1px solid #e4e6e5;color: #888;'";}else{echo "style='color: var(--primary-color);border: 1px solid var(--primary-color);'";}?>>Next <span class="fa fa-angle-right"></span></a></li>
+                            <li><a class="next" href="view-request.php?page=<?php if($page>1){echo $page-1;}else{echo $page;}?>" <?php if($page<=1){echo "onclick='return false;' style='border: 1px solid #e4e6e5;color: #888;'";}else{echo "style='color: var(--primary-color);border: 1px solid var(--primary-color);'";}?>>Prev <span class="fa fa-angle-right"></span></a></li>
+                            <li><a class="next" href="view-request.php?page=<?php echo $page+1;?>" <?php if(($rowCount/(12*$page))<1){echo "onclick='return false;' style='border: 1px solid #e4e6e5;color: #888;'";}else{echo "style='color: var(--primary-color);border: 1px solid var(--primary-color);'";}?>>Next <span class="fa fa-angle-right"></span></a></li>
                         </ul>
                     </div>
                 <?php
             } else {
-                echo "<h5>No booking found..</h5>";
+                echo "<h5>No request found..</h5>";
             }
         ?>
         </div>

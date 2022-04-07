@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div class="row bottom-copies">
-                <p class="copy-footer-29 col-lg-8 text-start">© 2022 Pawsnap. All rights reserved.</p>
+                <p class="copy-footer-29 col-lg-8 text-start">© 2022 Paws Fur And Tail. All rights reserved.</p>
                 <div class="col-lg-4 main-social-right mt-lg-0 mt-4 text-start">
                 Designed by <a href="https://accoladetechsolutions.com/">Accolade Tech Solutions</a>
                 </div>

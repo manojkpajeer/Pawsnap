@@ -81,25 +81,32 @@
                                                 $rowAddress = mysqli_fetch_assoc($resAddress);
                                                 ?>
                                                     <div class="controls">
-                                                        <input class="form-control" type="text" name="name" value="<?php if(!empty($rowAddress['FullName'])){echo $rowAddress['FullName'];}?>" placeholder="Full name" required>
+                                                        <label class="form-lable">Your Name*:</label>
+                                                        <input class="form-control" type="text" name="name" value="<?php if(!empty($rowAddress['FullName'])){echo $rowAddress['FullName'];}?>" required>
                                                     </div>
                                                     <div class="controls">
-                                                        <input class="form-control" type="text" name="number" value="<?php if(!empty($rowAddress['CustomerPhone'])){echo $rowAddress['CustomerPhone'];}?>" placeholder="Mobile number" required>
+                                                        <label class="form-lable">Your Phone No*:</label>
+                                                        <input class="form-control" type="text" name="number" value="<?php if(!empty($rowAddress['CustomerPhone'])){echo $rowAddress['CustomerPhone'];}?>" required="" pattern="[0-9]{6,13}" title="Only numbers are accepted and it should be 6 to 13 digits in length" maxlength="13">
                                                     </div>
                                                     <div class="controls">
-                                                        <input class="form-control" type="text" name="address1" value="<?php if(!empty($rowAddress['AddressLine1'])){echo $rowAddress['AddressLine1'];}?>" placeholder="Address Line 1" required>
+                                                    <label class="form-lable">Address Line 1*:</label>
+                                                        <input class="form-control" type="text" name="address1" value="<?php if(!empty($rowAddress['AddressLine1'])){echo $rowAddress['AddressLine1'];}?>" required>
                                                     </div>
                                                     <div class="controls">
-                                                        <input class="form-control" type="text" name="address2" value="<?php if(!empty($rowAddress['AddressLine2'])){echo $rowAddress['AddressLine2'];}?>" placeholder="Address Line 2" required>
+                                                    <label class="form-lable">Address Line 2*:</label>
+                                                        <input class="form-control" type="text" name="address2" value="<?php if(!empty($rowAddress['AddressLine2'])){echo $rowAddress['AddressLine2'];}?>" required>
                                                     </div>
                                                     <div class="controls">
-                                                        <input class="form-control" type="text" name="landmark" value="<?php if(!empty($rowAddress['Landmark'])){echo $rowAddress['Landmark'];}?>" placeholder="Landmark" required>
+                                                    <label class="form-lable">Landmark*:</label>
+                                                        <input class="form-control" type="text" name="landmark" value="<?php if(!empty($rowAddress['Landmark'])){echo $rowAddress['Landmark'];}?>" required>
                                                     </div>
                                                     <div class="controls">
-                                                        <input class="form-control" type="number" name="pincode" value="<?php if(!empty($rowAddress['Pincode'])){echo $rowAddress['Pincode'];}?>" placeholder="Pincode" required maxlength="6">
+                                                    <label class="form-lable">Town/City*:</label>
+                                                        <input class="form-control" type="text" name="city" value="<?php if(!empty($rowAddress['CustomerCity'])){echo $rowAddress['CustomerCity'];}?>" required>
                                                     </div>
                                                     <div class="controls">
-                                                        <input class="form-control" type="text" name="city" value="<?php if(!empty($rowAddress['CustomerCity'])){echo $rowAddress['CustomerCity'];}?>" placeholder="Town/City" required>
+                                                    <label class="form-lable">Pincode*:</label>
+                                                        <input class="form-control" type="text" name="pincode" value="<?php if(!empty($rowAddress['Pincode'])){echo $rowAddress['Pincode'];}?>" required maxlength="6" pattern="[0-9]{6}" title="PIN Code should be 6 digits in length">
                                                     </div>
                                                 <?php
                                             } else {

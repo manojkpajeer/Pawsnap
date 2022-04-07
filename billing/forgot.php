@@ -62,7 +62,7 @@
 
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <head>
-<title>Pawsanp - Reset password</title>
+<title>Paws Fur And Tail - Reset password</title>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
@@ -90,7 +90,7 @@
 
 <div class="auth-box card" >
   <div class="text-center">
-  <h2 class="mt-4"><strong>PAW<span class="text-danger">SNAP</span></strong></h2>
+  <h2 class="mt-4"><strong>PAWS FUR AND<span class="text-danger"> TAIL</span></strong></h2>
 </div> 
 <div class="card-block" >
  

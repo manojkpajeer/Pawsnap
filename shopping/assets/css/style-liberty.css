@@ -17870,6 +17870,7 @@ fieldset:disabled .btn {
     --font-color: #888;
     --bg-color: #fff;
     --heading-color: #2b2d42;
+    --heading-color3: #2b2d42;
     --heading-color2: #eee;
     --primary-dark: #212529;
     --border-radius: 4px;
@@ -17896,6 +17897,7 @@ fieldset:disabled .btn {
     --bg-color: #131212;
     --heading-color: #eee;
     --heading-color2: #eee;
+    --heading-color3: #2b2d42;
     --border-color: rgba(255, 255, 255, 0.2);
     --border-color-light: rgba(255, 255, 255, 0.1);
     --nav-color: #fff;
@@ -20095,7 +20097,7 @@ button.owl-next {
 }
 
 .w3l-ecommerce-main .product-grid2 .social li a {
-    color: var(--heading-color);
+    color: var(--heading-color3);
     background-color: #fff;
     font-size: 17px;
     line-height: 45px;
@@ -20148,7 +20150,7 @@ button.owl-next {
 
 .w3l-ecommerce-main .product-grid2 .add-to-cart {
     color: #fff;
-    background-color: var(--heading-color);
+    background-color: var(--heading-color3); 
     font-size: 16px;
     font-weight: 600;
     text-align: center;

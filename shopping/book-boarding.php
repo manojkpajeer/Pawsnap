@@ -53,14 +53,7 @@
 ?>    
     <section class="w3l-test my-3">
         <div class="container py-lg-4 py-md-4 pt-5 pb-5">
-            <div class="row">
-                <div class="col-lg-9">
-                    <h3 class="title-w3l">Book An Appointment Now!</h3>
-                </div>
-                <div class="col-lg-3">
-                    <h3 class="title-w3l float-end"><a class="btn btn-primary" href="view-boarding.php">Your Booking</a></h3>
-                </div>
-            </div>
+            <h3 class="title-w3l">Book An Appointment Now!</h3>
             <div class="row">
                 <div class="contact-grids">
                     <form method="post" class="signin-form row" enctype="multipart/form-data">

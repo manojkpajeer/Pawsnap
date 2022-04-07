@@ -65,7 +65,7 @@ input[type=number] {
         <nav class="navbar header-navbar pcoded-header">
           <div class="navbar-wrapper">
             <div class="navbar-logo">
-              <a class="h4 text-dark text-center mt-2" href="home.php"><strong>PAW<span class="text-danger"> SNAP</span></strong></a>
+              <a class="h4 text-dark text-center mt-2" href="home.php"><strong>PAWS FUR &<span class="text-danger"> TAIL</span></strong></a>
               <a class="mobile-options">
                 <i class="feather icon-more-horizontal"></i>
               </a>

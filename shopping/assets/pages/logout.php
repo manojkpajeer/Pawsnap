@@ -13,5 +13,5 @@
     unset($_SESSION['user_name']);
     unset($_SESSION['is_customer_login']);
 
-    echo "<script>location.href='./index.php';</script>";
+    echo "<script>location.href='../../index.php';</script>";
 ?>
