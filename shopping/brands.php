@@ -2,6 +2,10 @@
 
     session_start();
 
+    require_once '../assets/config/connect.php';
+    require_once './assets/pages/header-link.php';
+    require_once './assets/pages/header.php';
+
     if(isset($_POST['add_to_cart'])) {
         
         $pid = $_POST['pid'];
@@ -23,7 +27,14 @@
         if (empty($_SESSION["cart_item"])) {
             
             $_SESSION["cart_item"] = $itemArray;
-            // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
+            ?>
+                <div class="container">
+                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                        <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            <?php
         } else {
             
             if (in_array($pid, array_keys($_SESSION["cart_item"]))) {
@@ -35,20 +46,31 @@
                             $_SESSION["cart_item"][$k]["productQuantity"] = 0;
                         }
                         $_SESSION["cart_item"][$k]["productQuantity"] += 1;
-                        // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
+                        ?>
+                        <div class="container">
+                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                                <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    <?php
                     }
                 }
             } else {
                 
                 $_SESSION["cart_item"] += $itemArray;
-                // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
+                ?>
+                <div class="container">
+                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                        <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            <?php
             }
         }
     }
 
-    require_once '../assets/config/connect.php';
-    require_once './assets/pages/header-link.php';
-    require_once './assets/pages/header.php';
     require_once './assets/pages/cart.php';
 
     $source = '0';
@@ -79,7 +101,7 @@
             brand_master ON brand_master.BR_Id = product_master.BrandId WHERE brand_master.Status = 1 
             AND product_master.Status = 1 GROUP BY brand_master.BrandName, brand_master.BR_Id";
 
-    $sql2 = "SELECT * FROM product_master WHERE BrandId = '$source' AND Discount >= '$discount' ";
+    $sql2 = "SELECT * FROM product_master WHERE BrandId = '$source' AND OnlineDiscount >= '$discount' ";
 
     if($sort == 'latest') {
 
@@ -103,7 +125,7 @@
     ?>
     <section class="w3l-ecommerce-main">
         <div class="ecom-contenthny w3l-ecommerce-main-inn pb-5">
-            <div class="container py-lg-5">
+            <div class="container py-lg-3">
                 <div class="ecommerce-grids row">
                     <div class="ecommerce-left-hny col-lg-4">
                         <aside class="pe-lg-4">
@@ -169,7 +191,7 @@
                                 </script>
                                 
                                 <?php
-                                    $resRecent = mysqli_query($conn, "SELECT ProductName, PM_Id, Image, Price, Discount FROM product_master WHERE Status = 1 ORDER BY PM_Id DESC LIMIT 3");
+                                    $resRecent = mysqli_query($conn, "SELECT ProductName, PM_Id, Image, Price, OnlineDiscount FROM product_master WHERE Status = 1 ORDER BY PM_Id DESC LIMIT 3");
                                     if(mysqli_num_rows($resRecent)>0){
                                         ?>
                                         <div class="single-gd mb-5 border-0">
@@ -185,7 +207,7 @@
                                                             <h5 class="post-title mb-2">
                                                                 <a href="product-detail.php?source=<?php echo $rowRecent['PM_Id']; ?>"><?php echo $rowRecent['ProductName'];?></a>
                                                             </h5>
-                                                            <a href="product-detail.php?source=<?php echo $rowRecent['PM_Id']; ?>" class="price-right"><i class='fa fa-rupee-sign'></i> <?php echo $rowRecent['Price']-($rowRecent['Price'] * ($rowRecent['Discount'] / 100));?></a>
+                                                            <a href="product-detail.php?source=<?php echo $rowRecent['PM_Id']; ?>" class="price-right"><i class='fa fa-rupee-sign'></i> <?php echo $rowRecent['Price']-($rowRecent['Price'] * ($rowRecent['OnlineDiscount'] / 100));?></a>
                                                         </div>
                                                     </div>
                                                     <?php
@@ -251,7 +273,7 @@
                                                             <input type="hidden" name="pid" value="<?php echo $rowViewProduct['PM_Id']; ?>">
                                                             <input type="hidden" name="pname" value="<?php echo $rowViewProduct['ProductName']; ?>">
                                                             <input type="hidden" name="pimage" value="<?php echo $rowViewProduct['Image']; ?>">
-                                                            <input type="hidden" name="pprice" value="<?php echo ($rowViewProduct['Price']-($rowViewProduct['Price'] * ($rowViewProduct['Discount'] / 100))); ?>">
+                                                            <input type="hidden" name="pprice" value="<?php echo ($rowViewProduct['Price']-($rowViewProduct['Price'] * ($rowViewProduct['OnlineDiscount'] / 100))); ?>">
                                                             <button type="submit" class="shopv-cart pshopv-cart add-to-cart" name="add_to_cart">
                                                                 Add to Cart
                                                             </button>
@@ -260,7 +282,7 @@
                                                 </div>
                                                 <div class="product-content">
                                                     <h3 class="title"><a href="product-detail.php?source=<?php echo $rowViewProduct['PM_Id']; ?>"><?php echo $rowViewProduct['ProductName']; ?></a></h3>
-                                                    <span class="price"><del><i class="fa fa-rupee-sign"></i><?php echo number_format($rowViewProduct['Price'], 2); ?></del> <i class='fa fa-rupee-sign'></i> <?php echo number_format($rowViewProduct['Price']-($rowViewProduct['Price'] * ($rowViewProduct['Discount'] / 100)), 2);?></span>
+                                                    <span class="price"><?php if($rowViewProduct['OnlineDiscount']>0){?><del><i class="fa fa-rupee-sign"></i><?php echo number_format($rowViewProduct['Price'], 2); ?></del> <?php } ?><i class='fa fa-rupee-sign'></i> <?php echo number_format($rowViewProduct['Price']-($rowViewProduct['Price'] * ($rowViewProduct['OnlineDiscount'] / 100)), 2);?></span>
                                                 </div>
                                             </div>
                                         </div>

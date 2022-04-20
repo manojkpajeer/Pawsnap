@@ -4,7 +4,7 @@
 
     if(empty($_SESSION['is_customer_login'])){
         
-        echo "<script>alert('Oops, Kindly login to proceed..');location.href='../login.php';</script>";
+        echo "<script>location.href='login.php';</script>";
     }
 
     require_once '../assets/config/connect.php';
@@ -12,11 +12,11 @@
     require_once './assets/pages/header.php';
     require_once './assets/pages/cart.php';
 
-    $resCountData = mysqli_query($conn, "SELECT ES_Id FROM ecom_sales WHERE CustomerId = '$_SESSION[user_id]' AND Status = 1");
+    $resCountData = mysqli_query($conn, "SELECT ES_Id FROM ecom_sales WHERE CustomerId = '$_SESSION[user_id]' AND Status = 'Order Placed'");
 
     $rowCount = mysqli_num_rows($resCountData);
 
-    $sql = "SELECT * FROM ecom_sales WHERE CustomerId = '$_SESSION[user_id]' AND Status = 1";
+    $sql = "SELECT * FROM ecom_sales WHERE CustomerId = '$_SESSION[user_id]' AND Status = 'Order Placed'";
 
     $sort = 'recent';
     if(!empty($_GET['sort'])){
@@ -109,7 +109,7 @@
                                         <div class="col-lg-9 col-sm-12 col-md-9 mt-2">
                                             <strong>Order Status : </strong>
                                             <div class="progress mt-2" style="height: 20px;">
-                                                <div class="progress-bar" role="progressbar" style="<?php if($rowOrder['Remarks']=='Order Placed'){echo 'width: 25%;';}if($rowOrder['Remarks']=='Order Shipped'){echo 'width: 50%;';}if($rowOrder['Remarks']=='Order Out for delivary'){echo 'width: 75%;';}if($rowOrder['Remarks']=='Order Delivered'){echo 'width: 100%;';}?>background-color:#ef233c" aria-valuemin="0" aria-valuemax="100"><?php echo $rowOrder['Remarks'];?></div>
+                                                <div class="progress-bar" role="progressbar" style="<?php if($rowOrder['DeliveryStatus']=='Order Initiated'){echo 'width: 25%;';}if($rowOrder['DeliveryStatus']=='Order Shipped'){echo 'width: 50%;';}if($rowOrder['DeliveryStatus']=='Order Out for delivary'){echo 'width: 75%;';}if($rowOrder['DeliveryStatus']=='Order Delivered'){echo 'width: 100%;';}?>background-color:#ef233c" aria-valuemin="0" aria-valuemax="100"><?php echo $rowOrder['DeliveryStatus'];?></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-sm-12 col-md-3 text-end mt-2">
@@ -130,7 +130,7 @@
                 </div>
                 <?php } else {
                     echo "<h3>There are no order to<span> show</span></h3>";
-                    echo "<p>Start shopping now!</p>";
+                    echo "<p class='mt-3'>Start shopping now!</p>";
                 } ?>
             </div>
         </div>

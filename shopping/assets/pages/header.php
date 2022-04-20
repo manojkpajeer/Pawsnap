@@ -110,7 +110,14 @@
                                     <li><a class="dropdown-item pt-2" href="order.php">Orders</a></li>
                                     <li><a class="dropdown-item" href="profile.php">Profile</a></li>
                                     <li><a class="dropdown-item" href="settings.php">Settings</a></li>
+                                    <li><a class="dropdown-item" href="./assets/pages/logout.php">Logout</a></li>
                                 </ul>
+                            </li>
+                            <?php
+                        } else{
+                            ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="login.php">Login</a>
                             </li>
                             <?php
                         }

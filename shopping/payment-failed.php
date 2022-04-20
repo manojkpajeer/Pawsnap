@@ -8,10 +8,10 @@
     $orderId = $_GET['failed'];
     if(empty($orderId)){
 
-        echo "<script>alert('Oops, Unable to process..');location.href='index.php';</script>";
+        echo "<script>location.href='index.php';</script>";
     } else {
 
-        mysqli_query($conn, "UPDATE ecom_sales SET Remarks = 'Order Failed' WHERE OrderId = '$orderId' AND Status = 0");
+        mysqli_query($conn, "UPDATE ecom_sales SET Status = 'Order Failed', Remarks = 'Order failed due to payment error.' WHERE OrderId = '$orderId' AND Status = 0");
 
         $resGetData = mysqli_query($conn, "SELECT * FROM payment_master WHERE OrderId = '$orderId'");
 
@@ -20,7 +20,7 @@
             $resGetData = mysqli_fetch_assoc($resGetData);
         } else{
 
-            echo "<script>alert('Oops, Unable to process..');location.href='index.php';</script>";
+            echo "<script>location.href='index.php';</script>";
         }
     }
 ?>

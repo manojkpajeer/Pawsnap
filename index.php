@@ -34,15 +34,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/shopping">Shopping</a>
                     </li>
-                    <?php
-                        if(empty($_SESSION['is_customer_login'])){
-                            
-                            echo "<li class='nav-item'><a class='nav-link' href='login.php'>Login</a></li>";
-                        } else{
-
-                            echo "<li class='nav-item'><a class='nav-link' href='./assets/pages/logout.php'>Logout</a></li>";
-                        }
-                    ?>
                 </ul>
             </div>
         </div>

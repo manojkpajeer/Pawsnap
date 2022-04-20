@@ -11,17 +11,30 @@
 
     if(empty($customerId)){
 
-        echo "<script>alert('Oops, Unable to process..');location.href='../login.php';</script>";
+        echo "<script>location.href='../login.php';</script>";
    }
 
     if(isset($_POST['update'])){
         
         if(mysqli_query($conn, "UPDATE customer_master SET FullName = '$_POST[name]', CustomerPhone = '$_POST[number]', AddressLine1 = '$_POST[address1]', AddressLine2 = '$_POST[address2]', Landmark = '$_POST[landmark]', Pincode = '$_POST[pincode]', CustomerCity = '$_POST[city]' WHERE CM_Id = '$customerId'")){
 
-            echo "<script>alert('Yay, Profile updated successfully..');</script>";
+            ?>
+            <div class="container">
+                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                    <strong>Yay,</strong> Your profile updated successfully.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
         } else {
-
-            echo "<script>alert('Oops, Unable to process..');</script>";
+            ?>
+            <div class="container">
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                    <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
         }
     }
 
@@ -31,7 +44,7 @@
         $resCustomer = mysqli_fetch_assoc($resCustomer);
     }else{
 
-        echo "<script>alert('Oops, Unable to process..');location.href='../login.php';</script>";
+        echo "<script>location.href='../login.php';</script>";
     }
 
     ?>
@@ -70,11 +83,11 @@
                         </div>
                         <div class="col-lg-6">
                             <label class="form-lable">Town/City*:</label>
-                            <input class="form-control" type="text" name="city" required value="<?php if(!empty($resCustomer['Pincode'])){echo $resCustomer['Pincode'];}?>">
+                            <input class="form-control" type="text" name="city" required value="<?php if(!empty($resCustomer['CustomerCity'])){echo $resCustomer['CustomerCity'];}?>">
                         </div>
                         <div class="col-lg-6">
                             <label class="form-lable">Pincode*:</label>
-                            <input class="form-control" type="text" name="pincode" required maxlength="6" pattern="[0-9]{6}" title="PIN Code should be 6 digits in length" value="<?php if(!empty($resCustomer['CustomerCity'])){echo $resCustomer['CustomerCity'];}?>">
+                            <input class="form-control" type="text" name="pincode" required maxlength="6" pattern="[0-9]{6}" title="PIN Code should be 6 digits in length" value="<?php if(!empty($resCustomer['Pincode'])){echo $resCustomer['Pincode'];}?>">
                         </div>
                         <div class="text-center mt-3">
                             <button class="btn btn-style btn-primary" name="update">SUBMIT</button>

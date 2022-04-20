@@ -209,7 +209,7 @@
     <section class="w3l-ecommerce-main">
         <div class="ecom-contenthny py-5">
             <?php
-                $resProductRow1 = mysqli_query($conn, "SELECT product_master.ProductName, product_master.PM_Id, product_master.Image, product_master.Price, product_master.Discount FROM product_row JOIN product_master ON product_master.PM_Id = product_row.ProductId WHERE product_row.Status =1 AND product_row.Row = '1' AND product_master.Status = 1 LIMIT 12");
+                $resProductRow1 = mysqli_query($conn, "SELECT product_master.ProductName, product_master.PM_Id, product_master.Image, product_master.Price, product_master.OnlineDiscount FROM product_row JOIN product_master ON product_master.PM_Id = product_row.ProductId WHERE product_row.Status =1 AND product_row.Row = '1' AND product_master.Status = 1 LIMIT 12");
                 if(mysqli_num_rows($resProductRow1)>0){
                     ?>
                         <div class="container py-lg-5">
@@ -242,7 +242,7 @@
                                                                 <input type="hidden" name="pid" value="<?php echo $rowProductRow1['PM_Id']; ?>">
                                                                 <input type="hidden" name="pname" value="<?php echo $rowProductRow1['ProductName']; ?>">
                                                                 <input type="hidden" name="pimage" value="<?php echo $rowProductRow1['Image']; ?>">
-                                                                <input type="hidden" name="pprice" value="<?php echo ($rowProductRow1['Price']-($rowProductRow1['Price'] * ($rowProductRow1['Discount'] / 100))); ?>">
+                                                                <input type="hidden" name="pprice" value="<?php echo ($rowProductRow1['Price']-($rowProductRow1['Price'] * ($rowProductRow1['OnlineDiscount'] / 100))); ?>">
                                                                 <button type="submit" class="shopv-cart pshopv-cart add-to-cart" name="add_to_cart">
                                                                     Add to Cart
                                                                 </button>
@@ -251,7 +251,7 @@
                                                     </div>
                                                     <div class="product-content">
                                                         <h3 class="title"><a href="product-detail.php?source=<?php echo $rowProductRow1['PM_Id']; ?>"><?php echo $rowProductRow1['ProductName']; ?></a></h3>
-                                                        <span class="price"><?php if($rowProductRow1['Discount']>0){?><del><i class="fa fa-rupee-sign"></i> <?php echo number_format($rowProductRow1['Price'], 2); ?></del><?php } ?> <i class='fa fa-rupee-sign'></i> <?php echo number_format($rowProductRow1['Price']-($rowProductRow1['Price'] * ($rowProductRow1['Discount'] / 100)), 2);?></span>
+                                                        <span class="price"><?php if($rowProductRow1['OnlineDiscount']>0){?><del><i class="fa fa-rupee-sign"></i> <?php echo number_format($rowProductRow1['Price'], 2); ?></del><?php } ?> <i class='fa fa-rupee-sign'></i> <?php echo number_format($rowProductRow1['Price']-($rowProductRow1['Price'] * ($rowProductRow1['OnlineDiscount'] / 100)), 2);?></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -263,7 +263,7 @@
                     <?php
                 }
 
-                $resProductRow2 = mysqli_query($conn, "SELECT product_master.ProductName, product_master.PM_Id, product_master.Image, product_master.Price, product_master.Discount FROM product_row JOIN product_master ON product_master.PM_Id = product_row.ProductId WHERE product_row.Status =1 AND product_row.Row = '2' AND product_master.Status = 1 LIMIT 12");
+                $resProductRow2 = mysqli_query($conn, "SELECT product_master.ProductName, product_master.PM_Id, product_master.Image, product_master.Price, product_master.OnlineDiscount FROM product_row JOIN product_master ON product_master.PM_Id = product_row.ProductId WHERE product_row.Status =1 AND product_row.Row = '2' AND product_master.Status = 1 LIMIT 12");
                 if(mysqli_num_rows($resProductRow2)>0){
                     ?>
                         <div class="container pb-lg-5">
@@ -296,7 +296,7 @@
                                                                 <input type="hidden" name="pid" value="<?php echo $rowProductRow2['PM_Id']; ?>">
                                                                 <input type="hidden" name="pname" value="<?php echo $rowProductRow2['ProductName']; ?>">
                                                                 <input type="hidden" name="pimage" value="<?php echo $rowProductRow2['Image']; ?>">
-                                                                <input type="hidden" name="pprice" value="<?php echo ($rowProductRow2['Price']-($rowProductRow2['Price'] * ($rowProductRow2['Discount'] / 100))); ?>">
+                                                                <input type="hidden" name="pprice" value="<?php echo ($rowProductRow2['Price']-($rowProductRow2['Price'] * ($rowProductRow2['OnlineDiscount'] / 100))); ?>">
                                                                 <button type="submit" class="shopv-cart pshopv-cart add-to-cart" name="add_to_cart">
                                                                     Add to Cart
                                                                 </button>
@@ -305,7 +305,7 @@
                                                     </div>
                                                     <div class="product-content">
                                                         <h3 class="title"><a href="product-detail.php?source=<?php echo $rowProductRow2['PM_Id']; ?>"><?php echo $rowProductRow2['ProductName']; ?></a></h3>
-                                                        <span class="price"><?php if($rowProductRow2['Discount']>0){?><del><i class="fa fa-rupee-sign"></i><?php echo number_format($rowProductRow2['Price'], 2); ?></del><?php } ?> <i class='fa fa-rupee-sign'></i> <?php echo number_format($rowProductRow2['Price']-($rowProductRow2['Price'] * ($rowProductRow2['Discount'] / 100)), 2);?></span>
+                                                        <span class="price"><?php if($rowProductRow2['OnlineDiscount']>0){?><del><i class="fa fa-rupee-sign"></i><?php echo number_format($rowProductRow2['Price'], 2); ?></del><?php } ?> <i class='fa fa-rupee-sign'></i> <?php echo number_format($rowProductRow2['Price']-($rowProductRow2['Price'] * ($rowProductRow2['OnlineDiscount'] / 100)), 2);?></span>
                                                     </div>
                                                 </div>
                                             </div>

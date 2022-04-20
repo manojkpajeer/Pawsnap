@@ -11,77 +11,54 @@
         echo "<script>location.href='index.php';</script>";
     }
 
-    if (isset($_POST['register'])) {
-        $password = $_POST['password'];
+    if (isset($_POST['login'])) {
+        $password = md5($_POST['password']);
         $email = $_POST['email'];
-        $phone = $_POST['phone'];
-        $name = $_POST['name'];
 
-        $res = mysqli_query($conn, "SELECT CM_Id FROM customer_master WHERE CustomerEmail = '$email' AND Status = 1");
+        $res = mysqli_query($conn, "SELECT login_master.UserPassword, customer_master.CM_Id, customer_master.FullName FROM login_master JOIN customer_master ON customer_master.CustomerEmail = login_master.UserEmail WHERE login_master.UserEmail = '$email' AND customer_master.Status = 1 AND login_master.UserRole = 'Customer'");
         if (mysqli_num_rows($res)>0) {
-            ?>
-            <div class="container">
-                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                    <strong>Oops,</strong> An Email Id already in use, Kindly choose different email id.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        <?php   
-        }
-        else{
 
-            if(mysqli_query($conn, "INSERT INTO customer_master(FullName, CustomerEmail, CustomerPhone, Status, DateCreate) 
-                VALUES ('$name', '$email', '$phone', 1,  NOW())")){
+            $row = mysqli_fetch_assoc($res);
+            $ac_password = $row['UserPassword'];
+            if ($password == $ac_password) {
 
-                $password = md5($_POST['password']);
+                $_SESSION['user_id'] = $row['CM_Id'];
+                $_SESSION['user_name'] = $row['FullName'];
+                $_SESSION['user_role'] = 'Customer';
+                $_SESSION['user_email'] = $email;
+                $_SESSION['is_customer_login'] = true;
 
-                if (mysqli_query($conn, "INSERT INTO login_master (UserEmail, UserPassword, UserRole) VALUES ('$email', '$password', 'Customer')")) {
-                                            
-                    ?>
-                    <div class="container">
-                        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Yay,</strong> You have registered successfully, Click <a href="login.php">here</a> to Login.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
-
-                } else {
-                    ?>
-                    <div class="container">
-                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
-                }    
+                echo "<script>location.href='index.php';</script>";
             }
             else{
                 ?>
                 <div class="container">
                     <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
+                        <strong>Oops,</strong> An invalid password you entered.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </div>
-            <?php
-            }
-        }     
+            <?php   
+            }            
+        }
+        else{  
+            ?>
+            <div class="container">
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                    <strong>Oops,</strong> An email does not exist, Kindly enter valid email id.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php     
+        }
     }
     
     ?>
-   <section class="w3l-forml-main">
+   <section class="w3l-forml-main py-3">
         <div class="form-hnyv-sec py-sm-5 py-3">
             <div class="form-wrapv">
-                <h2>Register your account</h2>
+                <h2>Login to your account</h2>
                 <form method="post">
-                    <div class="form-sub-w3">
-                        <input type="text" name="name" placeholder="Full Name " required="" />
-                        <div class="icon-w3">
-                            <span class="fas fa-user" aria-hidden="true"></span>
-                        </div>
-                    </div>
                     <div class="form-sub-w3">
                         <input type="email" name="email" placeholder="Email Id " required="" />
                         <div class="icon-w3">
@@ -89,22 +66,19 @@
                         </div>
                     </div>
                     <div class="form-sub-w3">
-                        <input type="text" name="phone" placeholder="Phone No " required="" pattern="[0-9]{6,13}" title="Only numbers are accepted and it should be 6 to 13 digits in length" maxlength="13"/>
-                        <div class="icon-w3">
-                            <span class="fas fa-phone" aria-hidden="true"></span>
-                        </div>
-                    </div>
-                    <div class="form-sub-w3">
-                        <input type="password" name="password" placeholder="Password" required="" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" title="Must contain at least one number, one uppercase letter, one lowercase letter and 6 or more characters" maxlength="25"/>
+                        <input type="password" name="password" placeholder="Password" required="" />
                         <div class="icon-w3">
                             <span class="fas fa-unlock-alt" aria-hidden="true"></span>
                         </div>
                     </div>
+                    <div class="form-sub-content">
+                        <p class="forgot-w3ls">Lost Password?<a class href="forgot.php"> Reset</a></p>
+                    </div>
                     <div class="submit-button text-center">
-                        <button class="btn btn-style btn-primary" name="register">Register Now</button>
+                        <button class="btn btn-style btn-primary" name="login">Login Now</button>
                     </div>
                     <div class="submit-button mt-3 text-center">
-                        <p class="forgot-w3ls1">Already have an account? <a class href="login.php">Signin</a></p>
+                        <p class="forgot-w3ls1">Don't have an account? <a class href="register.php">Signup</a></p>
                     </div>
                 </form>
             </div>

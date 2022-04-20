@@ -7,45 +7,54 @@
     require_once './assets/pages/header.php';
     require_once './assets/pages/cart.php';
 
-    if(!empty($_SESSION['is_customer_login'])){
-        echo "<script>location.href='index.php';</script>";
-    }
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
 
-    if (isset($_POST['register'])) {
-        $password = $_POST['password'];
-        $email = $_POST['email'];
-        $phone = $_POST['phone'];
-        $name = $_POST['name'];
+    require '../assets/vendor/autoload.php';
 
-        $res = mysqli_query($conn, "SELECT CM_Id FROM customer_master WHERE CustomerEmail = '$email' AND Status = 1");
+    $mail = new PHPMailer(true);
+
+    if(isset($_POST['reset'])){
+        $email_id = $_POST['email'];
+        $key = md5($email_id);
+
+        $res = mysqli_query($conn, "SELECT login_master.UserPassword, customer_master.FullName  FROM login_master JOIN customer_master ON customer_master.CustomerEmail = login_master.UserEmail WHERE login_master.UserEmail = '$email_id' AND customer_master.Status = 1");
         if (mysqli_num_rows($res)>0) {
-            ?>
-            <div class="container">
-                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                    <strong>Oops,</strong> An Email Id already in use, Kindly choose different email id.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        <?php   
-        }
-        else{
 
-            if(mysqli_query($conn, "INSERT INTO customer_master(FullName, CustomerEmail, CustomerPhone, Status, DateCreate) 
-                VALUES ('$name', '$email', '$phone', 1,  NOW())")){
+            $row = mysqli_fetch_assoc($res); 
+            $userName = $row['FullName'];
+            $source = $row['UserPassword'];
+            $app_name = "Paws Fur And Tail";
+            $subject = "Password reset confirmation - " . $app_name;
+            $link = "http://pawsnap.test/shopping/reset.php?source=".$source."&pref=".$key;
+            $bodyMessage="Hi " . $userName . ",<br>There was recently a request to reset the password on your account.Please click the link below to set a new password:<br><a href='".$link."'>Click here</a> to reset your password.<br>If you don't want to reset your password, just ignore this message.<br><br>Thank you<br>The ".$app_name." Team";
 
-                $password = md5($_POST['password']);
-
-                if (mysqli_query($conn, "INSERT INTO login_master (UserEmail, UserPassword, UserRole) VALUES ('$email', '$password', 'Customer')")) {
-                                            
+            try {                   
+                $mail->isSMTP();                                           
+                $mail->Host       = 'smtp.gmail.com';                    
+                $mail->SMTPAuth   = true;                                  
+                $mail->Username   = 'project.head1994@gmail.com';                    
+                $mail->Password   = 'MAnoj143@@';                               
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;           
+                $mail->Port       = 465;                                  
+            
+                $mail->setFrom('project.head1994@gmail.com', $app_name);
+                $mail->addAddress($email_id, $userName);
+            
+                $mail->IsHTML(true);
+                $mail->Subject = $subject;
+                $mail->Body = $bodyMessage;
+            
+                if ($mail->send()) {
                     ?>
                     <div class="container">
                         <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Yay,</strong> You have registered successfully, Click <a href="login.php">here</a> to Login.
+                            <strong>Yay,</strong> We have sent an email to recover your password, Kindly check your email.
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </div>
                 <?php
-
                 } else {
                     ?>
                     <div class="container">
@@ -55,56 +64,46 @@
                         </div>
                     </div>
                 <?php
-                }    
-            }
-            else{
+                }
+            } catch (Exception $e) {
                 ?>
-                <div class="container">
-                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="container">
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                            <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                     </div>
-                </div>
-            <?php
+                <?php
             }
-        }     
+        }else{
+            ?>
+            <div class="container">
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                    <strong>Oops,</strong> An email does not exist, Kindly enter valid email id.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
+        }
     }
     
     ?>
-   <section class="w3l-forml-main">
+   <section class="w3l-forml-main py-3">
         <div class="form-hnyv-sec py-sm-5 py-3">
             <div class="form-wrapv">
-                <h2>Register your account</h2>
+                <h2>Reset your account</h2>
                 <form method="post">
-                    <div class="form-sub-w3">
-                        <input type="text" name="name" placeholder="Full Name " required="" />
-                        <div class="icon-w3">
-                            <span class="fas fa-user" aria-hidden="true"></span>
-                        </div>
-                    </div>
                     <div class="form-sub-w3">
                         <input type="email" name="email" placeholder="Email Id " required="" />
                         <div class="icon-w3">
                             <span class="fas fa-envelope" aria-hidden="true"></span>
                         </div>
                     </div>
-                    <div class="form-sub-w3">
-                        <input type="text" name="phone" placeholder="Phone No " required="" pattern="[0-9]{6,13}" title="Only numbers are accepted and it should be 6 to 13 digits in length" maxlength="13"/>
-                        <div class="icon-w3">
-                            <span class="fas fa-phone" aria-hidden="true"></span>
-                        </div>
-                    </div>
-                    <div class="form-sub-w3">
-                        <input type="password" name="password" placeholder="Password" required="" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" title="Must contain at least one number, one uppercase letter, one lowercase letter and 6 or more characters" maxlength="25"/>
-                        <div class="icon-w3">
-                            <span class="fas fa-unlock-alt" aria-hidden="true"></span>
-                        </div>
-                    </div>
                     <div class="submit-button text-center">
-                        <button class="btn btn-style btn-primary" name="register">Register Now</button>
+                        <button class="btn btn-style btn-primary" name="reset">Reset Now</button>
                     </div>
                     <div class="submit-button mt-3 text-center">
-                        <p class="forgot-w3ls1">Already have an account? <a class href="login.php">Signin</a></p>
+                        <p class="forgot-w3ls">Remember Your Password?<a class href="login.php"> Signin</a></p>
                     </div>
                 </form>
             </div>

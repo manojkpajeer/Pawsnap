@@ -28,25 +28,58 @@
 
                 $resPassword = mysqli_fetch_assoc($resPassword);
 
-                if ($current_password == $resPassword['UserPassword']) {
+                if (md5($current_password) == $resPassword['UserPassword']) {
 
-                    if (mysqli_query($conn, "UPDATE login_master SET UserPassword = '$new_password' WHERE UserEmail = '$_SESSION[user_email]' AND UserRole = 'Customer'")) {
+                    $ac_password = md5($new_password);
+                    if (mysqli_query($conn, "UPDATE login_master SET UserPassword = '$ac_password' WHERE UserEmail = '$_SESSION[user_email]' AND UserRole = 'Customer'")) {
 
-                        echo "<script>alert('Yay, Password updated successfully..');</script>";
+                        ?>
+                        <div class="container">
+                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                                <strong>Yay,</strong> Your password updated successfully.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    <?php
                     } else {
-
-                        echo "<script>alert('Oops, Unable to update password..');</script>";
+                        ?>
+                        <div class="container">
+                            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                                <strong>Oops,</strong> Unable to update your password, kindly try after sometimes.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    <?php
                     }
                 } else {
-
-                    echo "<script>alert('Oops, Invalid current password..');</script>";
+                    ?>
+                    <div class="container">
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                            <strong>Oops,</strong> An invalid current password, Kindly enter valid password.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                <?php
                 }
             } else {
-
-                echo "<script>alert('Oops, Unable to process..');</script>";
+                ?>
+                <div class="container">
+                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                        <strong>Oops,</strong> Unable to process your request, kindly try after sometimes.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            <?php
             }
         }else{
-            echo "<script>alert('Oops, Password mis-match..');</script>";
+            ?>
+                <div class="container">
+                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                        <strong>Oops,</strong> The password confirmation does not match.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            <?php
         }
     }
     

@@ -1,6 +1,10 @@
 <?php
 
     session_start();
+    
+    require_once '../assets/config/connect.php';
+    require_once './assets/pages/header-link.php';
+    require_once './assets/pages/header.php';
 
     if(isset($_POST['add_cart_item'])) {
 
@@ -15,6 +19,14 @@
                 
                 $_SESSION["cart_item"][$k]["productQuantity"] += 1;
 
+                ?>
+                    <div class="container">
+                        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                            <strong>Yay,</strong> Cart updated successfully.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                <?php
             }
         }
     }
@@ -32,6 +44,15 @@
                 else if ($_SESSION["cart_item"][$k]["productQuantity"] > 1) {
                   $_SESSION["cart_item"][$k]["productQuantity"] -= 1;
                 }
+
+                ?>
+                    <div class="container">
+                        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                            <strong>Yay,</strong> Cart updated successfully.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                <?php
             }
         }
     }
@@ -40,11 +61,17 @@
 
         $prodId = $_POST['pid'];
         unset($_SESSION['cart_item'][$prodId]);
+
+        ?>
+            <div class="container">
+                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                    <strong>Yay,</strong> Item removed successfully.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
     }
-    
-    require_once '../assets/config/connect.php';
-    require_once './assets/pages/header-link.php';
-    require_once './assets/pages/header.php';
+
     require_once './assets/pages/cart.php';
 
     if(isset($_POST['cart_checkout'])){
@@ -54,9 +81,9 @@
             $OrderId = time(). strtoupper(uniqid());
             $customerId = $_SESSION['user_id'];
 
-            if(mysqli_query($conn, "INSERT INTO ecom_sales (CustomerId, OrderId, Status, DateCreate, Remarks, PaymentId) VALUES ('$customerId', '$OrderId', 0, NOW(), 'Order Initiated', 0)")){
+            if(mysqli_query($conn, "INSERT INTO ecom_sales (CustomerId, OrderId, Status, DateCreate, Remarks, PaymentId) VALUES ('$customerId', '$OrderId', 'Order Initiated', NOW(), 'A new order has been initiated by customer', 0)")){
 
-                $insertData = "INSERT INTO ecom_sales_temp (OrderId, ProductId, Quantity, Status, DateCreate) VALUES";
+                $insertData = "INSERT INTO ecom_sales_temp (OrderId, ProductId, Quantity, Status, DateCreate, Message) VALUES";
                 $i = 0;
 
                 foreach($_SESSION['cart_item'] as $item){
@@ -65,7 +92,7 @@
                         $insertData .= ", ";
                     }
 
-                    $insertData .= "('$OrderId', '$item[prodictId]', '$item[productQuantity]', 1, NOW())";
+                    $insertData .= "('$OrderId', '$item[prodictId]', '$item[productQuantity]', 1, NOW(), '$item[message]')";
 
                     $i++;
                 }
@@ -75,15 +102,29 @@
                     echo "<script>location.href='order-confirm.php?source=$OrderId';</script>";
                 } else {
 
-                    echo "<script>alert('Oops, Unable to process..');</script>";
+                    ?>
+                    <div class="container">
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                            <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                <?php
                 }
             } else {
 
-                echo "<script>alert('Oops, Unable to process..');</script>";
+                ?>
+                    <div class="container">
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                            <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                <?php
             }
         } else {
 
-            echo "<script>alert('Oops, Kindly login to proceed..');location.href='../login.php';</script>";
+            echo "<script>location.href='login.php';</script>";
         }
     }
 

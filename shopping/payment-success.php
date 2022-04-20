@@ -246,7 +246,7 @@
 
                     $resPaymentData = mysqli_fetch_assoc($resPaymentData);
 
-                    if(mysqli_query($conn, "UPDATE ecom_sales SET Status = 1, PaymentId = '$resPaymentData[PM_Id]', Remarks = 'Order Placed' WHERE OrderId = '$orderId' AND Status = 0")){
+                    if(mysqli_query($conn, "UPDATE ecom_sales SET Status = 'Order Placed', PaymentId = '$resPaymentData[PM_Id]', Remarks = 'Order has been placed successfully', DeliveryStatus = 'Order Initiated' WHERE OrderId = '$orderId'")){
 
                         echo "<div class='title'>Your order placed successfully!</div>";
                         echo "<div class='text-end me-3'><a class='btn btn-sm btn-outline-danger' href='order.php'>View Order</a></div>";

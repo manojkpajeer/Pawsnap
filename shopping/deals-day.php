@@ -80,7 +80,7 @@
             AND product_master.Status = 1 GROUP BY category_master.CategoryName, category_master.CT_Id";
 
 
-    $sql2 = "SELECT * FROM product_master WHERE CategoryId = '$source' AND Discount >= '$discount' ";
+    $sql2 = "SELECT * FROM product_master WHERE CategoryId = '$source' AND OnlineDiscount >= '$discount' ";
 
     if($sort == 'low') {
         
@@ -141,7 +141,7 @@
                                 </script>
                                 
                                 <?php
-                                    $resRecent = mysqli_query($conn, "SELECT ProductName, PM_Id, Image, Price, Discount FROM product_master WHERE Status = 1 ORDER BY PM_Id DESC LIMIT 3");
+                                    $resRecent = mysqli_query($conn, "SELECT ProductName, PM_Id, Image, Price, OnlineDiscount FROM product_master WHERE Status = 1 ORDER BY PM_Id DESC LIMIT 3");
                                     if(mysqli_num_rows($resRecent)>0){
                                         ?>
                                         <div class="single-gd mb-5 border-0">
@@ -157,7 +157,7 @@
                                                             <h5 class="post-title mb-2">
                                                                 <a href="product-detail.php?source=<?php echo $rowRecent['PM_Id']; ?>"><?php echo $rowRecent['ProductName'];?></a>
                                                             </h5>
-                                                            <a href="product-detail.php?source=<?php echo $rowRecent['PM_Id']; ?>" class="price-right"><i class='fa fa-rupee-sign'></i> <?php echo $rowRecent['Price']-($rowRecent['Price'] * ($rowRecent['Discount'] / 100));?></a>
+                                                            <a href="product-detail.php?source=<?php echo $rowRecent['PM_Id']; ?>" class="price-right"><i class='fa fa-rupee-sign'></i> <?php echo $rowRecent['Price']-($rowRecent['Price'] * ($rowRecent['OnlineDiscount'] / 100));?></a>
                                                         </div>
                                                     </div>
                                                     <?php
@@ -222,7 +222,7 @@
                                                             <input type="hidden" name="pid" value="<?php echo $rowViewProduct['PM_Id']; ?>">
                                                             <input type="hidden" name="pname" value="<?php echo $rowViewProduct['ProductName']; ?>">
                                                             <input type="hidden" name="pimage" value="<?php echo $rowViewProduct['Image']; ?>">
-                                                            <input type="hidden" name="pprice" value="<?php echo ($rowViewProduct['Price']-($rowViewProduct['Price'] * ($rowViewProduct['Discount'] / 100))); ?>">
+                                                            <input type="hidden" name="pprice" value="<?php echo ($rowViewProduct['Price']-($rowViewProduct['Price'] * ($rowViewProduct['OnlineDiscount'] / 100))); ?>">
                                                             <button type="submit" class="shopv-cart pshopv-cart add-to-cart" name="add_to_cart">
                                                                 Add to Cart
                                                             </button>
@@ -231,7 +231,7 @@
                                                 </div>
                                                 <div class="product-content">
                                                     <h3 class="title"><a href="product-detail.php?source=<?php echo $rowViewProduct['PM_Id']; ?>"><?php echo $rowViewProduct['ProductName']; ?></a></h3>
-                                                    <span class="price"><del><i class="fa fa-rupee-sign"></i><?php echo number_format($rowViewProduct['Price'], 2); ?></del> <i class='fa fa-rupee-sign'></i> <?php echo number_format($rowViewProduct['Price']-($rowViewProduct['Price'] * ($rowViewProduct['Discount'] / 100)), 2);?></span>
+                                                    <span class="price"><?php if($rowViewProduct['OnlineDiscount']>0){?><del><i class="fa fa-rupee-sign"></i><?php echo number_format($rowViewProduct['Price'], 2); ?></del> <?php } ?><i class='fa fa-rupee-sign'></i> <?php echo number_format($rowViewProduct['Price']-($rowViewProduct['Price'] * ($rowViewProduct['OnlineDiscount'] / 100)), 2);?></span>
                                                 </div>
                                             </div>
                                         </div>

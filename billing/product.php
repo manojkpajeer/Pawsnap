@@ -62,7 +62,7 @@
 
         if(mysqli_query($conn, "UPDATE product_master SET CategoryId = '$_POST[category]', BrandId = '$_POST[brand]', 
         ProductName = '$_POST[name]', ProductCode = '$_POST[code]', Image = '$imagePath', Description = '$description', 
-        Price = '$_POST[price]', Discount = '$_POST[discount]', GST = '$_POST[gst]', Status = '$_POST[status]', 
+        Price = '$_POST[price]', Discount = '$_POST[discount]', OnlineDiscount = '$_POST[odiscount]', GST = '$_POST[gst]', Status = '$_POST[status]', 
         Image1 = '$imagePath1', Image2 = '$imagePath2', Image3 = '$imagePath3', ProductQuantity = '$_POST[quantity]' WHERE PM_Id = '$_POST[sid]'")){
 
             echo "<script>alert('Yay, Product updated successfully..');</script>";
@@ -90,9 +90,9 @@
             $description = addslashes($_POST['description']);
 
             if(mysqli_query($conn, "INSERT INTO product_master (CategoryId, BrandId, ProductName, ProductCode, Image, 
-            Description, Price, Discount, GST, Status, DateCreate, Image1, Image2, Image3, ProductQuantity) VALUES ('$_POST[category]', 
+            Description, Price, Discount, OnlineDiscount, GST, Status, DateCreate, Image1, Image2, Image3, ProductQuantity) VALUES ('$_POST[category]', 
             '$_POST[brand]', '$_POST[name]', '$_POST[code]', '$bannerPath', 'description', '$_POST[price]', 
-            '$_POST[discount]', '$_POST[gst]', '$_POST[status]', NOW(), '$imagePath1', '$imagePath2', '$imagePath3', '$_POST[quantity]')")){
+            '$_POST[discount]', '$_POST[odiscount]', '$_POST[gst]', '$_POST[status]', NOW(), '$imagePath1', '$imagePath2', '$imagePath3', '$_POST[quantity]')")){
 
                 echo "<script>alert('Yay, Product added successfully..');</script>";   
             }
@@ -185,29 +185,29 @@
                                 </div>
                                 <div class="col-md-4 mt-3">
                                     <label class="form-label">Price</label>
-                                    <input class="form-control" id="pprice" name="price" required min="1" type="number" step="0.01" oninput="calculatePrice()">
+                                    <input class="form-control" name="price" required min="1" type="number" step="0.01">
                                 </div>
                                 <div class="col-md-4 mt-3">
-                                    <label class="form-label">Discounts(In %)</label>
-                                    <input class="form-control" name="discount" id="pdiscount" required type="number" max="100" value="0" oninput="calculatePrice()" min="0">
+                                    <label class="form-label">Billing Disc(In %)</label>
+                                    <input class="form-control" name="discount" required type="number" max="100" value="0" min="0">
+                                </div>
+                                <div class="col-md-4 mt-3">
+                                    <label class="form-label">Online Disc(In %)</label>
+                                    <input class="form-control" name="odiscount" required type="number" max="100" value="0" min="0">
                                 </div>
                                 <div class="col-md-4 mt-3">
                                     <label class="form-label">GST(In %)</label>
                                     <input class="form-control" name="gst" required type="number" max="100" value="18" min="0">
                                 </div>
-                                <div class="col-md-4 mt-3">
-                                    <label class="form-label">Payable Price</label>
-                                    <input class="form-control" id="ptotal" name="tprice" readonly value="0">
-                                </div>
-                                <div class="col-md-4 mt-3">
+                                <div class="col-md-6 mt-3">
                                     <label class="form-label">Description</label>
                                     <textarea class="form-control" name="description"></textarea>
                                 </div>
-                                <div class="col-md-4 mt-3">
+                                <div class="col-md-3 mt-3">
                                     <label class="form-label">Quantity</label>
                                     <input class="form-control" id="pquantity" name="quantity" required min="0" type="number" value="0">
                                 </div>
-                                <div class="col-md-4 mt-3">
+                                <div class="col-md-3 mt-3">
                                     <label class="form-label">Status</label>
                                     <select class="form-control" required name="status" title="Please choose status">
                                         <option value="">Select</option>
@@ -244,7 +244,8 @@
                                 <th>Product</th>
                                 <th>Quantity</th>
                                 <th>MRP</th>
-                                <th>Discount</th>
+                                <th>Bill Disc</th>
+                                <th>Online Disc</th>
                                 <th>GST</th>
                                 <th>Price</th>
                                 <th>Status</th>
@@ -255,7 +256,7 @@
                         <tbody>
 
                         <?php
-                        $resData = mysqli_query($conn, "SELECT product_master.PM_Id, product_master.ProductQuantity, product_master.Description, product_master.CategoryId, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId ORDER BY product_master.PM_Id DESC");
+                        $resData = mysqli_query($conn, "SELECT product_master.PM_Id, product_master.ProductQuantity, product_master.Description, product_master.CategoryId, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.OnlineDiscount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId ORDER BY product_master.PM_Id DESC");
                         if(mysqli_num_rows($resData)>0)
                         {
                             $cnt = 1;
@@ -273,6 +274,7 @@
                                 <td><?php echo $row['ProductQuantity']; ?></td>
                                 <td><?php echo number_format($row['Price'], 2); ?></td>
                                 <td><?php echo $row['Discount']; ?></td>
+                                <td><?php echo $row['OnlineDiscount']; ?></td>
                                 <td><?php echo $row['GST']; ?></td>
                                 <td><?php echo number_format($row['Price'] - ($row['Price'] * ($row['Discount']/100)), 2); ?></td>
                                
@@ -370,21 +372,21 @@
                                                 </div>
                                                 <div class="col-md-4 mt-3">
                                                     <label class="form-label">Price</label>
-                                                    <input class="form-control" id="pprice<?php echo $row['PM_Id']?>" name="price" required min="1" type="number" step="0.01" oninput="calculatePrice2('<?php echo $row['PM_Id'];?>')" value="<?php echo number_format($row['Price'], 2, '.', '');?>">
+                                                    <input class="form-control" name="price" required min="1" type="number" step="0.01" value="<?php echo number_format($row['Price'], 2, '.', '');?>">
                                                 </div>
                                                 <div class="col-md-4 mt-3">
-                                                    <label class="form-label">Discounts(In %)</label>
-                                                    <input class="form-control" name="discount" id="pdiscount<?php echo $row['PM_Id']?>" required type="number" max="100" value="<?php echo $row['Discount'];?>" oninput="calculatePrice2('<?php echo $row['PM_Id'];?>')" min="0">
+                                                    <label class="form-label">Billing Discounts(In %)</label>
+                                                    <input class="form-control" name="discount" required type="number" max="100" value="<?php echo $row['Discount'];?>" min="0">
+                                                </div>
+                                                <div class="col-md-4 mt-3">
+                                                    <label class="form-label">Online Discounts(In %)</label>
+                                                    <input class="form-control" name="odiscount" required type="number" max="100" value="<?php echo $row['OnlineDiscount'];?>" min="0">
                                                 </div>
                                                 <div class="col-md-4 mt-3">
                                                     <label class="form-label">GST(In %)</label>
                                                     <input class="form-control" name="gst" required type="number" max="100" value="<?php echo $row['GST'];?>" min="0">
                                                 </div>
-                                                <div class="col-md-4 mt-3">
-                                                    <label class="form-label">Payable Price</label>
-                                                    <input class="form-control" id="ptotal<?php echo $row['PM_Id']?>" name="tprice" readonly value="<?php echo number_format($row['Price'] - ($row['Price'] * ($row['Discount']/100)), 2, '.', '');?>">
-                                                </div>
-                                                <div class="col-md-4 mt-3">
+                                                <div class="col-md-6 mt-3">
                                                     <label class="form-label">Description</label>
                                                     <textarea class="form-control" name="description"><?php echo $row['Description'];?></textarea>
                                                 </div>
@@ -394,11 +396,11 @@
                                                 <input type="hidden" name="img1" value="<?php echo $row['Image1'];?>">
                                                 <input type="hidden" name="img2" value="<?php echo $row['Image2'];?>">
                                                 <input type="hidden" name="img3" value="<?php echo $row['Image3'];?>">
-                                                <div class="col-md-4 mt-3">
+                                                <div class="col-md-3 mt-3">
                                                     <label class="form-label">Quantity</label>
                                                     <input class="form-control" id="pquantity" name="quantity" required min="0" type="number" value="<?php echo $row['ProductQuantity'];?>">
                                                 </div>
-                                                <div class="col-md-4 mt-3">
+                                                <div class="col-md-3 mt-3">
                                                     <label class="form-label">Status</label>
                                                     <select class="form-control" required name="status" title="Please choose status">
                                                         <option value="">Select</option>
@@ -425,43 +427,6 @@
             </div>
         </div>
     </div>
-    <script>
-        function calculatePrice(){
-            var ndisc = Number(document.getElementById("pdiscount").value);
-            var nprice = Number(document.getElementById("pprice").value);
-
-            if (ndisc>100||ndisc<0) {
-                alert('Discount rate must be between 0 - 100')
-                document.getElementById("pdiscount").value = "0";
-                var numVal2 = 0 / 100;
-                var totalValue = nprice - (nprice * numVal2)
-                document.getElementById("ptotal").value = totalValue.toFixed(2);
-            }
-            else {
-                var numVal2 = ndisc / 100;
-                var totalValue = nprice - (nprice * numVal2)
-                document.getElementById("ptotal").value = totalValue.toFixed(2);
-            }
-        }
-        
-        function calculatePrice2(id){
-            var ndisc = Number(document.getElementById("pdiscount1").value);
-            var nprice = Number(document.getElementById("pprice"+id).value);
-
-            if (ndisc>100||ndisc<0) {
-                alert('Discount rate must be between 0 - 100')
-                document.getElementById("pdiscount"+id).value = "0";
-                var numVal2 = 0 / 100;
-                var totalValue = nprice - (nprice * numVal2)
-                document.getElementById("ptotal"+id).value = totalValue.toFixed(2);
-            }
-            else {
-                var numVal2 = ndisc / 100;
-                var totalValue = nprice - (nprice * numVal2)
-                document.getElementById("ptotal"+id).value = totalValue.toFixed(2);
-            }
-        }
-    </script>
     <?php
 
         require_once './pages/footer.php';

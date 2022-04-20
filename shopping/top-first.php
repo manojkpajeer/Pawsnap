@@ -1,6 +1,10 @@
 <?php
 
     session_start();
+    
+    require_once '../assets/config/connect.php';
+    require_once './assets/pages/header-link.php';
+    require_once './assets/pages/header.php';
 
     if(isset($_POST['add_to_cart'])) {
         
@@ -23,7 +27,14 @@
         if (empty($_SESSION["cart_item"])) {
             
             $_SESSION["cart_item"] = $itemArray;
-            // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
+            ?>
+                <div class="container">
+                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                        <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            <?php
         } else {
             
             if (in_array($pid, array_keys($_SESSION["cart_item"]))) {
@@ -36,20 +47,31 @@
                         }
                         $_SESSION["cart_item"][$k]["productQuantity"] += 1;
 
-                        // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
+                        ?>
+                        <div class="container">
+                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                                <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    <?php
                     }
                 }
             } else {
                 
                 $_SESSION["cart_item"] += $itemArray;
-                // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
+                ?>
+                <div class="container">
+                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                        <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            <?php
             }
         }
     }
-    
-    require_once '../assets/config/connect.php';
-    require_once './assets/pages/header-link.php';
-    require_once './assets/pages/header.php';
+
     require_once './assets/pages/cart.php';
     
     $page = '1';
@@ -58,7 +80,7 @@
         $page = $_GET['page'];
     }
 
-    $sql = "SELECT product_master.ProductName, product_master.PM_Id, product_master.Image, product_master.Price, product_master.Discount FROM product_row JOIN product_master ON product_master.PM_Id = product_row.ProductId WHERE product_row.Status =1 AND product_row.Row = '1' AND product_master.Status = 1";
+    $sql = "SELECT product_master.ProductName, product_master.PM_Id, product_master.Image, product_master.Price, product_master.OnlineDiscount FROM product_row JOIN product_master ON product_master.PM_Id = product_row.ProductId WHERE product_row.Status =1 AND product_row.Row = '1' AND product_master.Status = 1";
     $resProducts = mysqli_query($conn, $sql);
     $rowCount = mysqli_num_rows($resProducts);
 
@@ -69,7 +91,7 @@
 
 ?>
 <section class="w3l-ecommerce-main">
-    <div class="ecom-contenthny py-5">
+    <div class="ecom-contenthny py-3">
         <?php
             $resProductRow1 = mysqli_query($conn, $sql);
             if(mysqli_num_rows($resProductRow1)>0){
@@ -97,7 +119,7 @@
                                                             <input type="hidden" name="pid" value="<?php echo $rowProductRow1['PM_Id']; ?>">
                                                             <input type="hidden" name="pname" value="<?php echo $rowProductRow1['ProductName']; ?>">
                                                             <input type="hidden" name="pimage" value="<?php echo $rowProductRow1['Image']; ?>">
-                                                            <input type="hidden" name="pprice" value="<?php echo ($rowProductRow1['Price']-($rowProductRow1['Price'] * ($rowProductRow1['Discount'] / 100))); ?>">
+                                                            <input type="hidden" name="pprice" value="<?php echo ($rowProductRow1['Price']-($rowProductRow1['Price'] * ($rowProductRow1['OnlineDiscount'] / 100))); ?>">
                                                             <button type="submit" class="shopv-cart pshopv-cart add-to-cart" name="add_to_cart">
                                                                 Add to Cart
                                                             </button>
@@ -106,7 +128,7 @@
                                                 </div>
                                                 <div class="product-content">
                                                     <h3 class="title"><a href="product-detail.php?source=<?php echo $rowProductRow1['PM_Id']; ?>"><?php echo $rowProductRow1['ProductName']; ?></a></h3>
-                                                    <span class="price"><?php if($rowProductRow1['Discount']>0){?><del><i class="fa fa-rupee-sign"></i> <?php echo number_format($rowProductRow1['Price'], 2); ?></del><?php } ?> <i class='fa fa-rupee-sign'></i> <?php echo number_format($rowProductRow1['Price']-($rowProductRow1['Price'] * ($rowProductRow1['Discount'] / 100)), 2);?></span>
+                                                    <span class="price"><?php if($rowProductRow1['OnlineDiscount']>0){?><del><i class="fa fa-rupee-sign"></i> <?php echo number_format($rowProductRow1['Price'], 2); ?></del><?php } ?> <i class='fa fa-rupee-sign'></i> <?php echo number_format($rowProductRow1['Price']-($rowProductRow1['Price'] * ($rowProductRow1['OnlineDiscount'] / 100)), 2);?></span>
                                                 </div>
                                             </div>
                                         </div>

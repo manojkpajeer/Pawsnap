@@ -9,15 +9,15 @@
 
     require_once './pages/header.php';
 
-    $sql = "SELECT product_master.PM_Id, product_master.Description, product_master.CategoryId, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId ORDER BY product_master.PM_Id DESC";
+    $sql = "SELECT product_master.PM_Id, product_master.Description, product_master.CategoryId, product_master.OnlineDiscount, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId ORDER BY product_master.PM_Id DESC";
 
     if (isset($_POST['filter'])) {
         if (!empty($_POST['category']) && !empty($_POST['brand'])) {
-            $sql = "SELECT product_master.PM_Id, product_master.Description, product_master.CategoryId, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId WHERE CategoryId = '$_POST[category]' AND BrandId = '$_POST[brand]' ORDER BY product_master.PM_Id DESC";
+            $sql = "SELECT product_master.PM_Id, product_master.Description, product_master.CategoryId, product_master.OnlineDiscount, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId WHERE CategoryId = '$_POST[category]' AND BrandId = '$_POST[brand]' ORDER BY product_master.PM_Id DESC";
         } else if (!empty($_POST['category']) && empty($_POST['brand'])) {
-            $sql = "SELECT product_master.PM_Id, product_master.Description, product_master.CategoryId, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId WHERE CategoryId = '$_POST[category]' ORDER BY product_master.PM_Id DESC";
+            $sql = "SELECT product_master.PM_Id, product_master.Description, product_master.CategoryId, product_master.OnlineDiscount, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId WHERE CategoryId = '$_POST[category]' ORDER BY product_master.PM_Id DESC";
         } else if (empty($_POST['category']) && !empty($_POST['brand'])) {
-            $sql = "SELECT product_master.PM_Id, product_master.Description, product_master.CategoryId, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId WHERE BrandId = '$_POST[brand]' ORDER BY product_master.PM_Id DESC";
+            $sql = "SELECT product_master.PM_Id, product_master.Description, product_master.CategoryId, product_master.OnlineDiscount, product_master.BrandId, product_master.ProductName, product_master.ProductCode, product_master.Image, product_master.Price, product_master.Discount, product_master.GST, product_master.`Status`, product_master.DateCreate, category_master.CategoryName, category_master.ParentId, brand_master.BrandName FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId JOIN brand_master ON brand_master.BR_Id = product_master.BrandId WHERE BrandId = '$_POST[brand]' ORDER BY product_master.PM_Id DESC";
         }
     } 
     ?>
@@ -91,7 +91,8 @@
                                 <th>Product</th>
                                 <th>Code</th>
                                 <th>MRP</th>
-                                <th>Discount</th>
+                                <th>Billing Disc.</th>
+                                <th>Online Disc.</th>
                                 <th>GST</th>
                                 <th>Price</th>
                                 <th>Status</th>
@@ -117,6 +118,7 @@
                                 <td><?php echo $row['ProductCode']; ?></td>
                                 <td><?php echo number_format($row['Price'], 2); ?></td>
                                 <td><?php echo $row['Discount']; ?></td>
+                                <td><?php echo $row['OnlineDiscount']; ?></td>
                                 <td><?php echo $row['GST']; ?></td>
                                 <td><?php echo number_format($row['Price'] - ($row['Price'] * ($row['Discount']/100)), 2); ?></td>
                                

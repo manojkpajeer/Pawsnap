@@ -126,7 +126,7 @@
                             </div>
                         <?php
                         }
-                            $resRecent = mysqli_query($conn, "SELECT ProductName, PM_Id, Image, Price, Discount FROM product_master WHERE Status = 1 ORDER BY PM_Id DESC LIMIT 3");
+                            $resRecent = mysqli_query($conn, "SELECT ProductName, PM_Id, Image, Price, OnlineDiscount FROM product_master WHERE Status = 1 ORDER BY PM_Id DESC LIMIT 3");
                             if(mysqli_num_rows($resRecent)>0){
                         ?>
 
@@ -142,7 +142,7 @@
                                     </figure>
                                     <div class="text"><a href="product-detail.php?source=<?php echo $rowRecent['PM_Id']; ?>"><?php echo $rowRecent['ProductName'];?></a>
                                     </div>
-                                    <div class="post-info text-danger mt-2"><i class='fa fa-rupee-sign'></i> <?php echo $rowRecent['Price']-($rowRecent['Price'] * ($rowRecent['Discount'] / 100));?></div>
+                                    <div class="post-info text-danger mt-2"><i class='fa fa-rupee-sign'></i> <?php echo $rowRecent['Price']-($rowRecent['Price'] * ($rowRecent['OnlineDiscount'] / 100));?></div>
                                 </article>
                                 <?php
                                 }

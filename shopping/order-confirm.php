@@ -4,7 +4,7 @@
 
     if(empty($_SESSION['is_customer_login'])){
         
-        echo "<script>alert('Oops, Unable to process..');location.href='../login.php';</script>";
+        echo "<script>location.href='login.php';</script>";
     }
     
     require_once '../assets/config/connect.php';
@@ -16,14 +16,14 @@
 
     if(empty($orderId)){
 
-        echo "<script>alert('Oops, Unable to process..');location.href='index.php';</script>";
+        echo "<script>location.href='index.php';</script>";
     }
 
     $customerId = $_SESSION['user_id'];
 
     if(empty($customerId)){
 
-        echo "<script>alert('Oops, Unable to process..');location.href='../login.php';</script>";
+        echo "<script>location.href='login.php';</script>";
    }
 
     if(isset($_POST['make_payment'])){
@@ -33,7 +33,14 @@
             echo "<script>location.href='make-payment.php?prefetch=$orderId';</script>";
         } else {
 
-            echo "<script>alert('Oops, Unable to process..');</script>";
+            ?>
+            <div class="container">
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                    <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
         }
     }
     
@@ -48,16 +55,16 @@
                     <div class="col-md-4 checkout-left-basket">
                         
                         <h3>Confirm Your<span> Order</span></h3>
-                        <h4 class="mt-4">Continue to basket</h4>
+                        <a href="index.php"><h4 class="mt-4">Continue shopping</h4></a>
                         <ul>
                             <?php
                                 $tottalPrice = 0;
-                                $resData = mysqli_query($conn, "SELECT product_master.ProductName, product_master.Price, product_master.Discount, ecom_sales_temp.Quantity FROM ecom_sales JOIN ecom_sales_temp ON ecom_sales_temp.OrderId = ecom_sales.OrderId  JOIN product_master ON product_master.PM_Id = ecom_sales_temp.ProductId WHERE ecom_sales_temp.OrderId = '$orderId' AND ecom_sales.OrderId = '$orderId' AND ecom_sales.Status = 0 AND ecom_sales.Remarks = 'Order Initiated'");
+                                $resData = mysqli_query($conn, "SELECT product_master.ProductName, product_master.Price, product_master.OnlineDiscount, ecom_sales_temp.Quantity FROM ecom_sales JOIN ecom_sales_temp ON ecom_sales_temp.OrderId = ecom_sales.OrderId  JOIN product_master ON product_master.PM_Id = ecom_sales_temp.ProductId WHERE ecom_sales_temp.OrderId = '$orderId' AND ecom_sales.OrderId = '$orderId' AND ecom_sales.Status = 'Order Initiated'");
                                 if(mysqli_num_rows($resData)>0){
 
                                     while($rowData = mysqli_fetch_assoc($resData)){
 
-                                        $productPrice = ($rowData['Price'] - ($rowData['Price'] * ($rowData['Discount'] / 100)) * $rowData['Quantity']);
+                                        $productPrice = ($rowData['Price'] - ($rowData['Price'] * ($rowData['OnlineDiscount'] / 100)) * $rowData['Quantity']);
                                         echo "<li>".$rowData['ProductName']." (".$rowData['Quantity'].") <span>".number_format($productPrice, 2)." </span></li>";
                                         $tottalPrice += $productPrice;
                                     }
@@ -81,31 +88,31 @@
                                                 $rowAddress = mysqli_fetch_assoc($resAddress);
                                                 ?>
                                                     <div class="controls">
-                                                        <label class="form-lable">Your Name*:</label>
+                                                        <label class="form-lable text-secondary">Your Name*:</label>
                                                         <input class="form-control" type="text" name="name" value="<?php if(!empty($rowAddress['FullName'])){echo $rowAddress['FullName'];}?>" required>
                                                     </div>
                                                     <div class="controls">
-                                                        <label class="form-lable">Your Phone No*:</label>
+                                                        <label class="form-lable text-secondary">Your Phone No*:</label>
                                                         <input class="form-control" type="text" name="number" value="<?php if(!empty($rowAddress['CustomerPhone'])){echo $rowAddress['CustomerPhone'];}?>" required="" pattern="[0-9]{6,13}" title="Only numbers are accepted and it should be 6 to 13 digits in length" maxlength="13">
                                                     </div>
                                                     <div class="controls">
-                                                    <label class="form-lable">Address Line 1*:</label>
+                                                        <label class="form-lable text-secondary">Address Line 1*:</label>
                                                         <input class="form-control" type="text" name="address1" value="<?php if(!empty($rowAddress['AddressLine1'])){echo $rowAddress['AddressLine1'];}?>" required>
                                                     </div>
                                                     <div class="controls">
-                                                    <label class="form-lable">Address Line 2*:</label>
+                                                        <label class="form-lable text-secondary">Address Line 2*:</label>
                                                         <input class="form-control" type="text" name="address2" value="<?php if(!empty($rowAddress['AddressLine2'])){echo $rowAddress['AddressLine2'];}?>" required>
                                                     </div>
                                                     <div class="controls">
-                                                    <label class="form-lable">Landmark*:</label>
+                                                        <label class="form-lable text-secondary">Landmark*:</label>
                                                         <input class="form-control" type="text" name="landmark" value="<?php if(!empty($rowAddress['Landmark'])){echo $rowAddress['Landmark'];}?>" required>
                                                     </div>
                                                     <div class="controls">
-                                                    <label class="form-lable">Town/City*:</label>
+                                                        <label class="form-lable text-secondary">Town/City*:</label>
                                                         <input class="form-control" type="text" name="city" value="<?php if(!empty($rowAddress['CustomerCity'])){echo $rowAddress['CustomerCity'];}?>" required>
                                                     </div>
                                                     <div class="controls">
-                                                    <label class="form-lable">Pincode*:</label>
+                                                        <label class="form-lable text-secondary">Pincode*:</label>
                                                         <input class="form-control" type="text" name="pincode" value="<?php if(!empty($rowAddress['Pincode'])){echo $rowAddress['Pincode'];}?>" required maxlength="6" pattern="[0-9]{6}" title="PIN Code should be 6 digits in length">
                                                     </div>
                                                 <?php

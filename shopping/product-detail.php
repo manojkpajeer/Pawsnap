@@ -1,6 +1,10 @@
 <?php
 
     session_start();
+    
+    require_once '../assets/config/connect.php';
+    require_once './assets/pages/header-link.php';
+    require_once './assets/pages/header.php';
 
     if(isset($_POST['add_to_cart'])) {
         
@@ -9,6 +13,7 @@
         $pprice = $_POST['pprice'];
         $pquantity = $_POST['pquantity'];
         $pimage = $_POST['pimage'];
+        $message = $_POST['message'];
 
         $itemArray = array(
             $pid => array(
@@ -16,7 +21,8 @@
                 'productName' => $pname, 
                 'productQuantity' => $pquantity, 
                 'productPrice' => $pprice,
-                'productImage' => $pimage
+                'productImage' => $pimage,
+                'productMessage' => $message
             )
         );
         
@@ -24,7 +30,14 @@
         if (empty($_SESSION["cart_item"])) {
             
             $_SESSION["cart_item"] = $itemArray;
-            // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
+            ?>
+                <div class="container">
+                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                        <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            <?php
         } else {
             
             if (in_array($pid, array_keys($_SESSION["cart_item"]))) {
@@ -36,20 +49,31 @@
                             $_SESSION["cart_item"][$k]["productQuantity"] = 0;
                         }
                         $_SESSION["cart_item"][$k]["productQuantity"] += $pquantity;
-                        // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
+                        ?>
+                        <div class="container">
+                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                                <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    <?php
                     }
                 }
             } else {
                 
                 $_SESSION["cart_item"] += $itemArray;
-                // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
+                ?>
+                <div class="container">
+                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                        <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            <?php
             }
         }
     }
 
-    require_once '../assets/config/connect.php';
-    require_once './assets/pages/header-link.php';
-    require_once './assets/pages/header.php';
     require_once './assets/pages/cart.php';
 
     if(isset($_POST['buy_now'])){
@@ -58,23 +82,38 @@
 
             $OrderId = time().strtoupper(uniqid());
             $customerId = $_SESSION['user_id'];
+            $message = $_POST['message'];
 
-            if(mysqli_query($conn, "INSERT INTO ecom_sales (CustomerId, OrderId, Status, DateCreate, Remarks, PaymentId) VALUES ('$customerId', '$OrderId', 0, NOW(), 'Order Initiated', 0)")){
+            if(mysqli_query($conn, "INSERT INTO ecom_sales (CustomerId, OrderId, Status, DateCreate, Remarks, PaymentId) VALUES ('$customerId', '$OrderId', 'Order Initiated', NOW(), 'A new order has been initiated by customer', 0)")){
 
-                if(mysqli_query($conn, "INSERT INTO ecom_sales_temp (OrderId, ProductId, Quantity, Status, DateCreate) VALUES ('$OrderId', '$_POST[pid]', '$_POST[pquantity]', 1, NOW())")){
+                if(mysqli_query($conn, "INSERT INTO ecom_sales_temp (OrderId, ProductId, Quantity, Status, DateCreate, Message) VALUES ('$OrderId', '$_POST[pid]', '$_POST[pquantity]', 1, NOW())")){
 
                     echo "<script>location.href='order-confirm.php?source=$OrderId';</script>";
                 } else {
 
-                    echo "<script>alert('Oops, Unable to process..');</script>";
+                    ?>
+                    <div class="container">
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                            <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                <?php
                 }
             } else {
 
-                echo "<script>alert('Oops, Unable to process..');</script>";
+                ?>
+                <div class="container">
+                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                        <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            <?php
             }
         } else {
 
-            echo "<script>alert('Oops, Kindly login to proceed..');location.href='../login.php';</script>";
+            echo "<script>location.href='login.php';</script>";
         }
     }
 
@@ -89,7 +128,7 @@
 
     if(!empty($_GET['source'])){
  
-        $resProduct = mysqli_query($conn, "SELECT * FROM product_master WHERE PM_Id = '$_GET[source]' AND Status = 1");
+        $resProduct = mysqli_query($conn, "SELECT pm.*, cm.ParentId FROM product_master pm, category_master cm WHERE pm.PM_Id = '$_GET[source]' AND pm.Status = 1 AND cm.CT_Id = pm.CategoryId");
         if(mysqli_num_rows($resProduct)>0){
 
             $rowProduct = mysqli_fetch_assoc($resProduct);
@@ -120,7 +159,7 @@
                                 <div class="col-lg-7 single-right-left ps-lg-5">
                                     <h3><?php echo $rowProduct['ProductName'];?></h3>
                                     <div class="caption">
-                                        <h6><span class="item_price fa fa-rupee-sign" style="float:left"><?php echo number_format($rowProduct['Price']-($rowProduct['Price'] * ($rowProduct['Discount'] / 100)), 2);?><del><?php echo number_format($rowProduct['Price'], 2);?></del></span>
+                                        <h6><span class="item_price fa fa-rupee-sign" style="float:left"><?php echo number_format($rowProduct['Price']-($rowProduct['Price'] * ($rowProduct['OnlineDiscount'] / 100)), 2);?><?php if($rowProduct['OnlineDiscount']>0){?><del><?php echo number_format($rowProduct['Price'], 2);?></del><?php } ?></span>
                                         </h6>
                                     </div>
                                     <div class="desc_single my-4">
@@ -128,18 +167,23 @@
                                         <p><?php echo $rowProduct['Description'];?></p>
                                     </div>
                                     <form method="post">
-                                        <!-- <div class="quantity">
-                                            <div class="quantity-select">
-                                                <div class="entry value-minus">&nbsp;</div>
-                                                <div class="entry value"><span>1</span></div>
-                                                <div class="entry value-plus active">&nbsp;</div>
+                                        <?php
+                                        if($rowProduct['ParentId']==3){
+                                            ?>
+                                            <div class="row">
+                                                <div class="col-lg-8 col-sm-12">
+                                                    <small class="text-danger">Enter Your message*</small>
+                                                    <input type="text" class="form-control form-control-lg" required name="message"/>
+                                                </div>
                                             </div>
-                                        </div> -->
-                                        <div class="description-apt d-grid mt-4">
+                                            <?php
+                                        }
+                                        ?>
+                                        <div class="description-apt d-grid mt-4"> 
                                             <input type="hidden" name="pid" value="<?php echo $rowProduct['PM_Id']; ?>">
                                             <input type="hidden" name="pname" value="<?php echo $rowProduct['ProductName']; ?>">
                                             <input type="hidden" name="pimage" value="<?php echo $rowProduct['Image']; ?>">
-                                            <input type="hidden" name="pprice" value="<?php echo ($rowProduct['Price']-($rowProduct['Price'] * ($rowProduct['Discount'] / 100))); ?>">
+                                            <input type="hidden" name="pprice" value="<?php echo ($rowProduct['Price']-($rowProduct['Price'] * ($rowProduct['OnlineDiscount'] / 100))); ?>">
                                             <input type="hidden" name="pquantity" value="1">
                                             <button type="submit" class="shopv-cart pshopv-cart add-to-cart btn btn-style btn-primary" name="add_to_cart">
                                                 Add to Cart
@@ -190,58 +234,6 @@
                     </div>
             <?php
             }
-            ?>
-        </div>
-    </section>
-
-    <section class="w3l-ecommerce-main">
-        <div class="ecom-contenthny py-5">
-            <?php
-                $resProductRow2 = mysqli_query($conn, "SELECT products.name, products.id, products.image, products.price, products.discount FROM product_row JOIN products ON products.id = product_row.ProductId WHERE product_row.Status =1 AND product_row.Row = '2' AND products.status = 1");
-                if(mysqli_num_rows($resProductRow2)>0){
-                    ?>
-                        <div class="container pb-lg-5">
-                            <h3 class="title-w3l">Top Picks For You</h3>
-                            <p class="">Handpicked Favourites just for you</p>
-                            <div class="ecom-products-grids row mt-lg-4 mt-3">
-                                <?php
-                                    while($rowProductRow2 = mysqli_fetch_assoc($resProductRow2)){
-                                        ?>
-                                            <div class="col-lg-3 col-6 product-incfhny mt-4">
-                                                <div class="product-grid2 shopv">
-                                                    <div class="product-image2">
-                                                        <a href="product-detail.php?source=<?php echo $rowProductRow2['id']; ?>">
-                                                            <img class="pic-1 img-fluid radius-image" src="assets/images/shop-1.jpg">
-                                                            <img class="pic-2 img-fluid radius-image" src="assets/images/shop-1.jpg">
-                                                        </a>
-                                                        <ul class="social">
-                                                            <li><a href="product-detail.php?source=<?php echo $rowProductRow2['id']; ?>" data-tip="Quick View"><span class="fa fa-eye"></span></a></li>
-                                                            <li><a href="checkout.php" data-tip="Add to Cart"><span class="fa fa-shopping-bag"></span></a></li>
-                                                        </ul>
-                                                        <div class="shopv single-item">
-                                                            <form action="#" method="post">
-                                                                <input type="hidden" name="pid" value="<?php echo $rowProductRow2['id']; ?>">
-                                                                <input type="hidden" name="pname" value="<?php echo $rowProductRow2['name']; ?>">
-                                                                <input type="hidden" name="pprice" value="<?php echo $rowProductRow2['price']; ?>">
-                                                                <button type="submit" class="shopv-cart pshopv-cart add-to-cart btn btn-style btn-primary" name="add_to_cart">
-                                                                    Add to Cart
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-content">
-                                                        <h3 class="title"><a href="product-detail.php?source=<?php echo $rowProductRow2['id']; ?>"><?php echo $rowProductRow2['name']; ?></a></h3>
-                                                        <span class="price"><del><i class="fa fa-rupee-sign"></i><?php echo number_format($rowProductRow2['price'], 2); ?></del> <i class='fa fa-rupee-sign'></i> <?php echo number_format($rowProductRow2['price']-($rowProductRow2['price'] * ($rowProductRow2['discount'] / 100)), 2);?></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php
-                                    }
-                                ?>
-                            </div>
-                        </div>  
-                    <?php
-                }
             ?>
         </div>
     </section>

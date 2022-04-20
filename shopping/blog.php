@@ -85,7 +85,7 @@
                         </div>
                     <?php
                 } else {
-                    echo "<h5>No blog found..</h5>";
+                    echo "<h5>Oops, Blog not found..</h5>";
                 }
             ?>
             </div>

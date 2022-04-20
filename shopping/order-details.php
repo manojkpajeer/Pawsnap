@@ -4,13 +4,38 @@
 
     if(empty($_SESSION['is_customer_login'])){
         
-        echo "<script>alert('Oops, Kindly login to proceed..');location.href='../login.php';</script>";
+        echo "<script>location.href='login.php';</script>";
     }
 
     require_once '../assets/config/connect.php';
     require_once './assets/pages/header-link.php';
     require_once './assets/pages/header.php';
     require_once './assets/pages/cart.php';
+
+    if(isset($_POST['cancelOrder'])){
+        $order_id = $_POST['orderId'];
+        $reason = $_POST['reason'];
+
+        if(mysqli_query($conn, "UPDATE ecom_sales SET Status = 'Order Cancelled', CancelReason ='$reason', Remarks = 'Order Cancelled By User' WHERE OrderId = '$order_id'")){
+            ?>
+                <div class="container">
+                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                        <strong>Yay,</strong> Your order cancelled successfully.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            <?php
+        }else{
+            ?>
+                <div class="container">
+                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
+                        <strong>Oops,</strong> Unable to cancel your order.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            <?php
+        }
+    }
 
     $orderId = '';
     if(!empty($_GET['source'])){
@@ -246,14 +271,14 @@
                                 </div>
                                 <div class="title mt-4">Products</div>
                                     <?php
-                                        $resProduct = mysqli_query($conn, "SELECT ecom_sales_temp.Quantity, product_master.Price, product_master.Discount, product_master.ProductName FROM ecom_sales_temp JOIN product_master ON product_master.PM_Id = ecom_sales_temp.ProductId WHERE ecom_sales_temp.OrderId = '$resOrder[OrderId]'");
+                                        $resProduct = mysqli_query($conn, "SELECT ecom_sales_temp.Quantity, product_master.Price, product_master.OnlineDiscount, product_master.ProductName FROM ecom_sales_temp JOIN product_master ON product_master.PM_Id = ecom_sales_temp.ProductId WHERE ecom_sales_temp.OrderId = '$resOrder[OrderId]'");
                                         if(mysqli_num_rows($resProduct)>0){
                                             
                                             echo "<div class='pricing'>";
                                             $finalPrice = 0;
                                             while($rowProduct = mysqli_fetch_assoc($resProduct)){
 
-                                                $price = (($rowProduct['Price']-($rowProduct['Price'] * ($rowProduct['Discount'] / 100)))*$rowProduct['Quantity']);
+                                                $price = (($rowProduct['Price']-($rowProduct['Price'] * ($rowProduct['OnlineDiscount'] / 100)))*$rowProduct['Quantity']);
                                                 $finalPrice += $price;
                                                 echo "<div class='row'>
                                                     <div class='col-7'>$rowProduct[ProductName]</div>
@@ -270,18 +295,48 @@
                                                     </div>
                                                 </div>";
                                         }
+
+                                        if($resOrder['Status'] == 'Order Placed' && $resOrder['DeliveryStatus'] == 'Order Initiated'){
+                                            ?>
+                                            <div class="row" style="padding: 3% 8%;">
+                                                <div class="col-12" id="cancelOrder">
+                                                    <a class="btn btn-outline-danger" onclick="showReason()">Cancel Order</a><br>
+                                                    <small>Note: Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry. Lorem Ipsum Has Been The Industry's Standard Dummy Text Ever Since The 1500s</small>
+                                                </div>
+                                                <div class="col-12" id="cancelReason" style="display: none;">
+                                                    <form method="POST">
+                                                        <input type="hidden" value="<?php echo $resOrder['OrderId'];?>" name="orderId"/>
+                                                        <label>Select Reason to cancel order</label><br>
+                                                        <select class="form-control w-50 mt-1" name="reason" required>
+                                                            <option value="">Choose</option>
+                                                            <option value="Ordered By Mistke">Placed order by mistke</option>
+                                                            <option value="Change of mind">Change of mind</option>
+                                                            <option value="Found a cheaper alternative">Found a cheaper alternative</option>
+                                                            <option value="Desided for alternate product">Desided for alternate product</option>
+                                                            <option value="Other">Other</option>
+                                                        </select>
+                                                        <button class="btn btn-sm btn-danger mt-3" name="cancelOrder">Submit</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <?php
+                                        }
                                     ?>
-                                    
-                                
+                                <script>
+                                    function showReason(){
+                                        $("#cancelOrder").css("display", "none");
+                                        $("#cancelReason").css("display", "block");
+                                    }
+                                </script>
                                 <div class="tracking">
                                     <div class="title">Tracking Order</div>
                                 </div>
                                 <div class="progress-track">
                                     <ul id="progressbar">
-                                        <li class="step0 <?php if($resOrder['Remarks']=='Order Delivered' || $resOrder['Remarks']=='Order Out for delivary' || $resOrder['Remarks']=='Order Shipped' || $resOrder['Remarks']=='Order Placed'){echo 'active';}?>" id="step1">Order Placed</li>
-                                        <li class="step0 text-center <?php if($resOrder['Remarks']=='Order Delivered' || $resOrder['Remarks']=='Order Out for delivary' || $resOrder['Remarks']=='Order Shipped'){echo 'active';}?>" id="step2">Order Shipped</li>
-                                        <li class="step0 text-right <?php if($resOrder['Remarks']=='Order Delivered' || $resOrder['Remarks']=='Order Out for delivary'){echo 'active';}?>" id="step3">Order Out for delivary</li>
-                                        <li class="step0 text-right <?php if($resOrder['Remarks']=='Order Delivered'){echo 'active';}?>" id="step4">Order Delivered</li>
+                                        <li class="step0 <?php if($resOrder['DeliveryStatus']=='Order Delivered' || $resOrder['DeliveryStatus']=='Order Out for delivary' || $resOrder['DeliveryStatus']=='Order Shipped' || $resOrder['DeliveryStatus']=='Order Initiated'){echo 'active';}?>" id="step1">Order Initiated</li>
+                                        <li class="step0 text-center <?php if($resOrder['DeliveryStatus']=='Order Delivered' || $resOrder['DeliveryStatus']=='Order Out for delivary' || $resOrder['DeliveryStatus']=='Order Shipped'){echo 'active';}?>" id="step2">Order Shipped</li>
+                                        <li class="step0 text-right <?php if($resOrder['DeliveryStatus']=='Order Delivered' || $resOrder['DeliveryStatus']=='Order Out for delivary'){echo 'active';}?>" id="step3">Order Out for delivary</li>
+                                        <li class="step0 text-right <?php if($resOrder['DeliveryStatus']=='Order Delivered'){echo 'active';}?>" id="step4">Order Delivered</li>
                                     </ul>
                                 </div>
                                 <div class="footer">

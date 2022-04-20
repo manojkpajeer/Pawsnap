@@ -20,10 +20,9 @@
                     <div class="footer-listw3-grids">
                         <ul class="footer-listw3">
                             <li><a href="index.php">Home Page</a></li>
-                            <li><a href="about.html">About Us</a></li>
-                            <li><a href="blog.html">Our Blogs</a></li>
-                            <li><a href="contact.html">Contact Us</a></li>
-                            <li><a href="#support">Help Desk</a></li>
+                            <li><a href="blog.php">Our Blogs</a></li>
+                            <li><a href="contact.php">Contact Us</a></li>
+                            <li><a href="boarding.php">Boarding</a></li>
                         </ul>
                     </div>
                 </div>
@@ -31,11 +30,10 @@
                     <h6 class="footer-title-29">Information</h6>
                     <div class="footer-listw3-grids">
                         <ul class="footer-listw3">
-                            <li><a href="#terms">Terms & Conditions</a></li>
-                            <li><a href="#deivery">Delivery Terms</a></li>
-                            <li><a href="#order">Order Tracking</a></li>
-                            <li><a href="#returns">Returns Policy</a></li>
-                            <li><a href="#support">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                            <li><a href="#">Delivery Terms</a></li>
+                            <li><a href="#">Returns Policy</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
                         </ul>
                     </div>
                 </div>
@@ -43,9 +41,9 @@
                 <div class="col-lg-3 col-md-6 footer-list-29 footer-4 mt-lg-0 mt-md-5 mt-4  ps-lg-5">
                     <h6 class="footer-title-29">Payment Method</h6>
                     <ul class="pay-method-grids">
-                        <li><a class="pay-method" href="#"><span class="fab fa-cc-visa" aria-hidden="true"></span></a></li>
-                        <li><a class="pay-method" href="#"><span class="fab fa-cc-paypal" aria-hidden="true"></span></a></li>
-                        <li><a class="pay-method" href="#"><span class="fab fa-cc-mastercard" aria-hidden="true"></span></a></li>
+                        <li><a class="pay-method"><span class="fab fa-cc-visa" aria-hidden="true"></span></a></li>
+                        <li><a class="pay-method"><span class="fab fa-cc-paypal" aria-hidden="true"></span></a></li>
+                        <li><a class="pay-method"><span class="fab fa-cc-mastercard" aria-hidden="true"></span></a></li>
                     </ul>      
                     <div class="main-social-footer-29 mt-5 text-start ">
                         <a href="#facebook" class="facebook" style="background: #3b5998;"><span class="fab fa-facebook-f"></span></a>
@@ -67,6 +65,13 @@
     <button onclick="topFunction()" id="movetop" title="Go to top">
         <span class="fa fa-angle-up"></span>
     </button>
+
+    <script>
+        $("#success-alert").fadeTo(5000, 500).slideUp(500, function(){
+            $("#success-alert").slideUp(500);
+        });
+    </script>
+
     <script>
         window.onscroll = function() {
             scrollFunction()
