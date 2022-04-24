@@ -9,35 +9,38 @@
 
     if(empty($_SESSION['is_customer_login'])){
 
-        echo "<script>alert('Oops, Kindly login to proceed..');location.href='boarding.php#boarding';</script>";
-    }
+        echo "<div class='text-center my-5'>
+                <img src='assets/images/error.png' class='img-fluid' width='360'>
+                <h3 class='mt-3'>Oops..<br>Kindly login to proceed. <br>Click <a href='login.php?source=view-boarding'>here</a> to login</h3>
+            </div>";
+    }else{
 
-    $customerId = $_SESSION['user_id'];
+        $customerId = $_SESSION['user_id'];
 
-    $sql = "SELECT * FROM boarding_master WHERE UserId = '$customerId' ORDER BY BM_Id DESC";
+        $sql = "SELECT * FROM boarding_master WHERE UserId = '$customerId' ORDER BY BM_Id DESC";
 
-    $resCount = mysqli_query($conn, $sql);
-    $rowCount = mysqli_num_rows($resCount);
+        $resCount = mysqli_query($conn, $sql);
+        $rowCount = mysqli_num_rows($resCount);
 
-    $page = '1';
-    if(!empty($_GET['page'])){
+        $page = '1';
+        if(!empty($_GET['page'])){
 
-        $page = $_GET['page'];
-    }
+            $page = $_GET['page'];
+        }
 
-    $maxPage = $page * 12;
-    $minPage = $maxPage - 12;
+        $maxPage = $page * 12;
+        $minPage = $maxPage - 12;
 
-    $sql = $sql . " LIMIT $minPage, $maxPage";
+        $sql = $sql . " LIMIT $minPage, $maxPage";
 ?>    
 <section class="w3l-blog bloghny-page">
     <div class="blog py-3" id="Newsblog">
         <div class="container pb-lg-5 py-md-4 py-2">
-            <h3 class="title-w3l mb-4">Your Boarding Requests.</h3>
         <?php 
             $resBlogData = mysqli_query($conn, $sql);
             if(mysqli_num_rows($resBlogData)>0){
                 ?>
+                <h3 class="title-w3l mb-4">Your Boarding Requests.</h3>
                 <div class="row">
                     <?php
                     while($rowBlogData = mysqli_fetch_assoc($resBlogData)){
@@ -67,13 +70,17 @@
                     </div>
                 <?php
             } else {
-                echo "<h5>No booking found..</h5>";
+                echo "<div class='text-center my-5'>
+                    <img src='assets/images/error.png' class='img-fluid' width='360'>
+                    <h3 class='mt-3'>Oops..<br>No boarding request found. <br>Click <a href='book-boarding.php'>here</a> to Book a slot now</h3>
+                </div>";
             }
         ?>
         </div>
     </div>
 </section>
 <?php
+    }
     require_once './assets/pages/footer.php';
 ?>
 

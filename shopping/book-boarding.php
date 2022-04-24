@@ -9,46 +9,52 @@
 
     if(empty($_SESSION['is_customer_login'])){
 
-        echo "<script>alert('Oops, Kindly login to proceed..');location.href='boarding.php#boarding';</script>";
-    }
+        echo "<div class='text-center my-5'>
+                <img src='assets/images/error.png' class='img-fluid' width='360'>
+                <h3 class='mt-3'>Oops..<br>Kindly login to proceed. <br>Click <a href='login.php?source=book-boarding'>here</a> to login</h3>
+            </div>";
+    } else{
 
-    if(isset($_POST['submit'])){
+        if(isset($_POST['submit'])){
 
-        $customerId = $_SESSION['user_id'];
+            $customerId = $_SESSION['user_id'];
 
-        if(empty($_FILES['pimage']['name'])){
-
-            if(mysqli_query($conn, "INSERT INTO boarding_master(OwnerName, PhoneNumber, Location, BoardingDate, Recomened, PetName, 
-                PetAge, PetHabbit, VaccinationDetails, IllnessDetails, BoardingStatus, DateCreated, UserId, BoardingRemarks)VALUES('$_POST[oname]', '$_POST[ophone]', 
-                '$_POST[olocation]', '$_POST[odate]', '$_POST[orecomend]', '$_POST[pname]', '$_POST[page]', '$_POST[phabbit]', 
-                '$_POST[pvaccine]', '$_POST[pillness]', 'Requested', NOW(), '$customerId', 'Pending admin approval')")){
-
-                echo "<script>alert('Yay, Your request sent successfully..');location.href='view-boarding.php';</script>";
-            } else{
-
-                echo "<script>alert('Oops, Unable to process..');</script>";
-            }
-        }else{
-            
-            $image_path = "assets/images/boarding/" . time() . "." . pathinfo($_FILES['pimage']['name'], PATHINFO_EXTENSION);
-            if(move_uploaded_file($_FILES['pimage']['tmp_name'], "admin/".$image_path)){
+            if(empty($_FILES['pimage']['name'])){
 
                 if(mysqli_query($conn, "INSERT INTO boarding_master(OwnerName, PhoneNumber, Location, BoardingDate, Recomened, PetName, 
-                    PetAge, PetHabbit, VaccinationDetails, IllnessDetails, BoardingStatus, DateCreated, PetImage, UserId, BoardingRemarks)VALUES('$_POST[oname]', '$_POST[ophone]', 
+                    PetAge, PetHabbit, VaccinationDetails, IllnessDetails, BoardingStatus, DateCreated, UserId, BoardingRemarks)VALUES('$_POST[oname]', '$_POST[ophone]', 
                     '$_POST[olocation]', '$_POST[odate]', '$_POST[orecomend]', '$_POST[pname]', '$_POST[page]', '$_POST[phabbit]', 
-                    '$_POST[pvaccine]', '$_POST[pillness]', 'Requested', NOW(), '$image_path', '$customerId', 'Pending admin approval')")){
+                    '$_POST[pvaccine]', '$_POST[pillness]', 'Requested', NOW(), '$customerId', 'Pending admin approval')")){
 
-                    echo "<script>alert('Yay, Your request sent successfully..');location.href='view-boarding.php';</script>";
+                    echo "<script type='text/javascript'>toastr.success('Your request sent successfully.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='view-boarding.php'}})</script>"; 
+
                 } else{
 
-                    echo "<script>alert('Oops, Unable to process your request..');</script>";
-                }
-            } else{
+                    echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
 
-                echo "<script>alert('Oops, Unable to process your request..');</script>";
+                }
+            }else{
+                
+                $image_path = "assets/images/boarding/" . time() . "." . pathinfo($_FILES['pimage']['name'], PATHINFO_EXTENSION);
+                if(move_uploaded_file($_FILES['pimage']['tmp_name'], "admin/".$image_path)){
+
+                    if(mysqli_query($conn, "INSERT INTO boarding_master(OwnerName, PhoneNumber, Location, BoardingDate, Recomened, PetName, 
+                        PetAge, PetHabbit, VaccinationDetails, IllnessDetails, BoardingStatus, DateCreated, PetImage, UserId, BoardingRemarks)VALUES('$_POST[oname]', '$_POST[ophone]', 
+                        '$_POST[olocation]', '$_POST[odate]', '$_POST[orecomend]', '$_POST[pname]', '$_POST[page]', '$_POST[phabbit]', 
+                        '$_POST[pvaccine]', '$_POST[pillness]', 'Requested', NOW(), '$image_path', '$customerId', 'Pending admin approval')")){
+
+                        echo "<script type='text/javascript'>toastr.success('Your request sent successfully.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='view-boarding.php'}})</script>"; 
+
+                    } else{
+
+                        echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
+                    }
+                } else{
+
+                    echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
+                }
             }
         }
-    }
 
 ?>    
     <section class="w3l-test my-3">
@@ -112,6 +118,7 @@
         </div>
     </section>
 <?php
+    }
     require_once './assets/pages/footer.php';
 ?>
 

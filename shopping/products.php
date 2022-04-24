@@ -12,6 +12,7 @@
         $pname = $_POST['pname'];
         $pprice = $_POST['pprice'];
         $pimage = $_POST['pimage'];
+        $message = $_POST['message'];
 
         $itemArray = array(
             $pid => array(
@@ -19,7 +20,8 @@
                 'productName' => $pname, 
                 'productQuantity' => 1, 
                 'productPrice' => $pprice,
-                'productImage' => $pimage
+                'productImage' => $pimage,
+                'productMessage' => $message
             )
         );
         
@@ -27,14 +29,7 @@
         if (empty($_SESSION["cart_item"])) {
             
             $_SESSION["cart_item"] = $itemArray;
-            ?>
-            <div class="container">
-                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                    <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        <?php
+            echo "<script type='text/javascript'>toastr.success('Product added to cart.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='checkout.php'}})</script>"; 
         } else {
             
             if (in_array($pid, array_keys($_SESSION["cart_item"]))) {
@@ -46,27 +41,13 @@
                             $_SESSION["cart_item"][$k]["productQuantity"] = 0;
                         }
                         $_SESSION["cart_item"][$k]["productQuantity"] += 1;
-                        ?>
-                        <div class="container">
-                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                                <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        </div>
-                    <?php
+                        echo "<script type='text/javascript'>toastr.success('Product added to cart.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='checkout.php'}})</script>"; 
                     }
                 }
             } else {
                 
                 $_SESSION["cart_item"] += $itemArray;
-                ?>
-                <div class="container">
-                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            <?php
+                echo "<script type='text/javascript'>toastr.success('Product added to cart.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='checkout.php'}})</script>"; 
             }
         }
     }
@@ -127,7 +108,7 @@
                 
     }
 
-    $sql2 = "SELECT * FROM product_master WHERE CategoryId = '$source' AND OnlineDiscount >= '$discount' ";
+    $sql2 = "SELECT category_master.ParentId, product_master.* FROM product_master JOIN category_master ON category_master.CT_Id = product_master.CategoryId WHERE product_master.CategoryId = '$source' AND product_master.OnlineDiscount >= '$discount' ";
 
     if($sort == 'latest') {
 
@@ -281,34 +262,61 @@
                                     ?>
                                         <div class="ecom-products-grids row">
                                     <?php
-                                    while ($rowViewProduct = mysqli_fetch_assoc($resViewProduct)){
-                                    ?>
+                                    while ($rowProductRow1 = mysqli_fetch_assoc($resViewProduct)){
+                                        $productPrice1 = ($rowProductRow1['Price']-($rowProductRow1['Price'] * ($rowProductRow1['OnlineDiscount'] / 100)));
+                                        ?>
                                         <div class="col-lg-4 col-6 product-incfhny mt-4">
-                                            <div class="product-grid2">
+                                            <div class="product-grid2 shopv">
                                                 <div class="product-image2">
-                                                    <a href="product-detail.php?source=<?php echo $rowViewProduct['PM_Id']; ?>">
-                                                        <img class="pic-1 img-fluid radius-image" src="../billing/<?php echo $rowViewProduct['Image'];?>">
-                                                        <img class="pic-2 img-fluid radius-image" src="../billing/<?php echo $rowViewProduct['Image'];?>">
+                                                    <a href="product-detail.php?source=<?php echo $rowProductRow1['PM_Id']; ?>">
+                                                        <img class="pic-1 img-fluid radius-image" src="../billing/<?php echo $rowProductRow1['Image']?>">
+                                                        <img class="pic-2 img-fluid radius-image" src="../billing/<?php echo $rowProductRow1['Image']?>">
                                                     </a>
                                                     <ul class="social">
-                                                        <li><a href="product-detail.php?source=<?php echo $rowViewProduct['PM_Id']; ?>" data-tip="Quick View"><span class="fa fa-eye"></span></a></li>
+                                                        <li><a href="product-detail.php?source=<?php echo $rowProductRow1['PM_Id']; ?>" data-tip="Quick View"><span class="fa fa-eye"></span></a></li>
                                                         <li><a href="checkout.php" data-tip="Add to Cart"><span class="fa fa-shopping-bag"></span></a></li>
                                                     </ul>
                                                     <div class="shopv single-item">
-                                                        <form action="#" method="post">
-                                                            <input type="hidden" name="pid" value="<?php echo $rowViewProduct['PM_Id']; ?>">
-                                                            <input type="hidden" name="pname" value="<?php echo $rowViewProduct['ProductName']; ?>">
-                                                            <input type="hidden" name="pimage" value="<?php echo $rowViewProduct['Image']; ?>">
-                                                            <input type="hidden" name="pprice" value="<?php echo ($rowViewProduct['Price']-($rowViewProduct['Price'] * ($rowViewProduct['OnlineDiscount'] / 100))); ?>">
-                                                            <button type="submit" class="shopv-cart pshopv-cart add-to-cart" name="add_to_cart">
+                                                        <form method="post">
+                                                            <input type="hidden" name="pid" value="<?php echo $rowProductRow1['PM_Id']; ?>">
+                                                            <input type="hidden" name="pname" value="<?php echo $rowProductRow1['ProductName']; ?>">
+                                                            <input type="hidden" name="pimage" value="<?php echo $rowProductRow1['Image']; ?>">
+                                                            <input type="hidden" name="pprice" value="<?php echo $productPrice1; ?>">
+                                                            <input type="hidden" name="message" value="N/A">
+                                                            <button <?php if($rowProductRow1['ParentId']==3){echo "type='button' data-bs-toggle='modal' data-bs-target='#product".$rowProductRow1['PM_Id']."'";}?> class="shopv-cart pshopv-cart add-to-cart" name="add_to_cart">
                                                                 Add to Cart
                                                             </button>
                                                         </form>
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
-                                                    <h3 class="title"><a href="product-detail.php?source=<?php echo $rowViewProduct['PM_Id']; ?>"><?php echo $rowViewProduct['ProductName']; ?></a></h3>
-                                                    <span class="price"><?php if($rowViewProduct['OnlineDiscount']>0){?><del><i class="fa fa-rupee-sign"></i><?php echo number_format($rowViewProduct['Price'], 2); ?></del> <?php } ?><i class='fa fa-rupee-sign'></i> <?php echo number_format($rowViewProduct['Price']-($rowViewProduct['Price'] * ($rowViewProduct['OnlineDiscount'] / 100)), 2);?></span>
+                                                    <h3 class="title"><a href="product-detail.php?source=<?php echo $rowProductRow1['PM_Id']; ?>"><?php echo $rowProductRow1['ProductName']; ?></a></h3>
+                                                    <span class="price"><?php if($rowProductRow1['OnlineDiscount']>0){?><del><i class="fa fa-rupee-sign"></i><?php echo number_format($rowProductRow1['Price'], 2); ?></del><?php } ?> <i class='fa fa-rupee-sign'></i> <?php echo number_format($productPrice1, 2);?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="modal fade" id="product<?php echo $rowProductRow1['PM_Id'];?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <form method="POST">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel"><?php echo $rowProductRow1['ProductName']; ?></h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <small class="text-danger">Enter Your message*</small>
+                                                            <input type="text" class="form-control form-control-lg" required name="message"/>
+                                                            <input type="hidden" name="pid" value="<?php echo $rowProductRow1['PM_Id']; ?>">
+                                                            <input type="hidden" name="pname" value="<?php echo $rowProductRow1['ProductName']; ?>">
+                                                            <input type="hidden" name="pimage" value="<?php echo $rowProductRow1['Image']; ?>">
+                                                            <input type="hidden" name="pprice" value="<?php echo $productPrice1; ?>">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button class="btn btn-primary" name="add_to_cart">Add To Cart</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>

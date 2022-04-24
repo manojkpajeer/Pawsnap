@@ -18,15 +18,7 @@
                 }
                 
                 $_SESSION["cart_item"][$k]["productQuantity"] += 1;
-
-                ?>
-                    <div class="container">
-                        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Yay,</strong> Cart updated successfully.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
+                echo "<script type='text/javascript'>toastr.success('Cart updated successfully.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true})</script>"; 
             }
         }
     }
@@ -45,14 +37,7 @@
                   $_SESSION["cart_item"][$k]["productQuantity"] -= 1;
                 }
 
-                ?>
-                    <div class="container">
-                        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Yay,</strong> Cart updated successfully.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
+                echo "<script type='text/javascript'>toastr.success('Cart updated successfully.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true})</script>"; 
             }
         }
     }
@@ -62,14 +47,7 @@
         $prodId = $_POST['pid'];
         unset($_SESSION['cart_item'][$prodId]);
 
-        ?>
-            <div class="container">
-                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                    <strong>Yay,</strong> Item removed successfully.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        <?php
+        echo "<script type='text/javascript'>toastr.success('Item removed successfully.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true})</script>"; 
     }
 
     require_once './assets/pages/cart.php';
@@ -92,7 +70,7 @@
                         $insertData .= ", ";
                     }
 
-                    $insertData .= "('$OrderId', '$item[prodictId]', '$item[productQuantity]', 1, NOW(), '$item[message]')";
+                    $insertData .= "('$OrderId', '$item[prodictId]', '$item[productQuantity]', 1, NOW(), '$item[productMessage]')";
 
                     $i++;
                 }
@@ -101,30 +79,14 @@
                     unset($_SESSION['cart_item']);
                     echo "<script>location.href='order-confirm.php?source=$OrderId';</script>";
                 } else {
-
-                    ?>
-                    <div class="container">
-                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
+                    echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>"; 
                 }
             } else {
-
-                ?>
-                    <div class="container">
-                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
+                echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>"; 
             }
         } else {
 
-            echo "<script>location.href='login.php';</script>";
+            echo "<script type='text/javascript'>toastr.error('Kindly login to proceed.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='login.php'}})</script>"; 
         }
     }
 

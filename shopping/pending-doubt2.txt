@@ -1,0 +1,26 @@
+
+coins -  bill amount - 1% redim
+payment - change
+
+
+discount - online discount for products
+order cancel - from admin status update
+personalise - text box for custom name
+multiple service
+apponit ment 1000 - 10 %
+total purchase > 2k 5% dynamic
+
+
+stock update pending
+image edit upload delete after upload
+
+
+delevery location
+product quantity max
+stock check
+shipping or other charge
+phone verify
+delivery address only mlore or anywhere
+payment failed whom to contact
+
+stock check & update online purchase

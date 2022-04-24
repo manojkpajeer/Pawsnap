@@ -7,34 +7,19 @@
     require_once './assets/pages/header.php';
     require_once './assets/pages/cart.php';
 
-    $customerId = $_SESSION['user_id'];
+    if(empty($_SESSION['user_id'])){
 
-    if(empty($customerId)){
-
-        echo "<script>location.href='../login.php';</script>";
+        echo "<script>location.href='login.php';</script>";
    }
+
+   $customerId = $_SESSION['user_id'];
 
     if(isset($_POST['update'])){
         
         if(mysqli_query($conn, "UPDATE customer_master SET FullName = '$_POST[name]', CustomerPhone = '$_POST[number]', AddressLine1 = '$_POST[address1]', AddressLine2 = '$_POST[address2]', Landmark = '$_POST[landmark]', Pincode = '$_POST[pincode]', CustomerCity = '$_POST[city]' WHERE CM_Id = '$customerId'")){
-
-            ?>
-            <div class="container">
-                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                    <strong>Yay,</strong> Your profile updated successfully.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        <?php
+            echo "<script type='text/javascript'>toastr.success('Your profile updated successfully.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
         } else {
-            ?>
-            <div class="container">
-                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                    <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        <?php
+            echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
         }
     }
 
@@ -42,61 +27,65 @@
     if(mysqli_num_rows($resCustomer)>0){
 
         $resCustomer = mysqli_fetch_assoc($resCustomer);
+
+        ?>
+        <section class="w3l-contact-2" id="contact">
+            <div class="container py-lg-4 py-md-3 py-2">
+                <div class="title-content text-center">
+                    <h6 class="title-subw3hny mb-1">Profile</h6>
+                    <h3 class="title-w3l mb-5">Update Profile Details</h3>
+                </div>
+
+                <div class="contact-grids">
+                    <div class="contact-right my-lg-5">
+                        <form method="post" class="signin-form row">
+                            <h6 class="title-subw3hny mb-2">Personal Details</h6>
+                            <div class="col-lg-6">
+                                <label class="form-lable">Your Name*:</label>
+                                <input type="text" name="name" class="contact-input" required="" value="<?php if(!empty($resCustomer['FullName'])){echo $resCustomer['FullName'];}?>">
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-lable">Your Phone No*:</label>
+                                <input type="text" name="number" class="contact-input" required="" pattern="[0-9]{6,13}" title="Only numbers are accepted and it should be 6 to 13 digits in length" maxlength="13" value="<?php if(!empty($resCustomer['CustomerPhone'])){echo $resCustomer['CustomerPhone'];}?>">
+                            </div>
+                            <h6 class="title-subw3hny mb-2">Other Details</h6>
+                            <div class="col-lg-6">
+                                <label class="form-lable">Address Line 1*:</label>
+                                <input class="form-control" type="text" name="address1" required value="<?php if(!empty($resCustomer['AddressLine1'])){echo $resCustomer['AddressLine1'];}?>">
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-lable">Address Line 2*:</label>
+                                <input class="form-control" type="text" name="address2" required value="<?php if(!empty($resCustomer['AddressLine2'])){echo $resCustomer['AddressLine2'];}?>">
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-lable">Landmark*:</label>
+                                <input class="form-control" type="text" name="landmark" required value="<?php if(!empty($resCustomer['Landmark'])){echo $resCustomer['Landmark'];}?>">
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-lable">Town/City*:</label>
+                                <input class="form-control" type="text" name="city" required value="<?php if(!empty($resCustomer['CustomerCity'])){echo $resCustomer['CustomerCity'];}?>">
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-lable">Pincode*:</label>
+                                <input class="form-control" type="text" name="pincode" required maxlength="6" pattern="[0-9]{6}" title="PIN Code should be 6 digits in length" value="<?php if(!empty($resCustomer['Pincode'])){echo $resCustomer['Pincode'];}?>">
+                            </div>
+                            <div class="text-center mt-3">
+                                <button class="btn btn-style btn-primary" name="update">SUBMIT</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <?php
     }else{
 
-        echo "<script>location.href='../login.php';</script>";
+        echo "<h3 class='text-center my-4'>Sorry! Unable process your request, Kindly try after sometimes</h3>";
     }
 
     ?>
     
-    <section class="w3l-contact-2" id="contact">
-        <div class="container py-lg-4 py-md-3 py-2">
-            <div class="title-content text-center">
-                <h6 class="title-subw3hny mb-1">Profile</h6>
-                <h3 class="title-w3l mb-5">Update Profile Details</h3>
-            </div>
-
-            <div class="contact-grids">
-                <div class="contact-right my-lg-5">
-                    <form method="post" class="signin-form row">
-                        <h6 class="title-subw3hny mb-2">Personal Details</h6>
-                        <div class="col-lg-6">
-                            <label class="form-lable">Your Name*:</label>
-                            <input type="text" name="name" class="contact-input" required="" value="<?php if(!empty($resCustomer['FullName'])){echo $resCustomer['FullName'];}?>">
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-lable">Your Phone No*:</label>
-                            <input type="text" name="number" class="contact-input" required="" pattern="[0-9]{6,13}" title="Only numbers are accepted and it should be 6 to 13 digits in length" maxlength="13" value="<?php if(!empty($resCustomer['CustomerPhone'])){echo $resCustomer['CustomerPhone'];}?>">
-                        </div>
-                        <h6 class="title-subw3hny mb-2">Other Details</h6>
-                        <div class="col-lg-6">
-                            <label class="form-lable">Address Line 1*:</label>
-                            <input class="form-control" type="text" name="address1" required value="<?php if(!empty($resCustomer['AddressLine1'])){echo $resCustomer['AddressLine1'];}?>">
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-lable">Address Line 2*:</label>
-                            <input class="form-control" type="text" name="address2" required value="<?php if(!empty($resCustomer['AddressLine2'])){echo $resCustomer['AddressLine2'];}?>">
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-lable">Landmark*:</label>
-                            <input class="form-control" type="text" name="landmark" required value="<?php if(!empty($resCustomer['Landmark'])){echo $resCustomer['Landmark'];}?>">
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-lable">Town/City*:</label>
-                            <input class="form-control" type="text" name="city" required value="<?php if(!empty($resCustomer['CustomerCity'])){echo $resCustomer['CustomerCity'];}?>">
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-lable">Pincode*:</label>
-                            <input class="form-control" type="text" name="pincode" required maxlength="6" pattern="[0-9]{6}" title="PIN Code should be 6 digits in length" value="<?php if(!empty($resCustomer['Pincode'])){echo $resCustomer['Pincode'];}?>">
-                        </div>
-                        <div class="text-center mt-3">
-                            <button class="btn btn-style btn-primary" name="update">SUBMIT</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+    
 
     <?php
         require_once './assets/pages/footer.php';

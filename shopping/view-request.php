@@ -9,27 +9,29 @@
 
     if(empty($_SESSION['is_customer_login'])){
 
-        echo "<script>alert('Oops, Kindly login to proceed..');location.href='grooming.php';</script>";
-    }
+        echo "<div class='text-center my-5'>
+                <img src='assets/images/error.png' class='img-fluid' width='360'>
+                <h3 class='mt-3'>Oops..<br>Kindly login to proceed. <br>Click <a href='login.php?source=view-request'>here</a> to login</h3>
+            </div>";
+    }else{
 
-    $customerId = $_SESSION['user_id'];
+        $customerId = $_SESSION['user_id'];
 
-    $sql = "SELECT gr.*, st.ServiceName, st.ServicePrice FROM grooming_request gr, service_type st 
-            WHERE st.SR_Id = gr.ServiceId AND gr.UserId = '$customerId' ORDER BY GR_Id DESC";
+        $sql = "SELECT * FROM grooming_request WHERE UserId = '$customerId' AND NOT GroomingStatus = 'Initiated' ORDER BY GR_Id DESC";
 
-    $resCount = mysqli_query($conn, $sql);
-    $rowCount = mysqli_num_rows($resCount);
+        $resCount = mysqli_query($conn, $sql);
+        $rowCount = mysqli_num_rows($resCount);
 
-    $page = '1';
-    if(!empty($_GET['page'])){
+        $page = '1';
+        if(!empty($_GET['page'])){
 
-        $page = $_GET['page'];
-    }
+            $page = $_GET['page'];
+        }
 
-    $maxPage = $page * 12;
-    $minPage = $maxPage - 12;
+        $maxPage = $page * 12;
+        $minPage = $maxPage - 12;
 
-    $sql = $sql . " LIMIT $minPage, $maxPage";
+        $sql = $sql . " LIMIT $minPage, $maxPage";
 ?>    
 <section class="w3l-blog bloghny-page">
     <div class="blog py-3" id="Newsblog">
@@ -49,10 +51,10 @@
                                         <div class="price-review d-flex justify-content-between mb-1 align-items-center">
                                             <p><?php echo date_format(date_create($rowBlogData['DateCreate']), 'd, M Y');?></p>
                                         </div>
-                                        Service:  <?php echo $rowBlogData['ServiceName'];?> <br>
-                                        Total Amount:  <?php echo $rowBlogData['ServicePrice'];?> <br>
-                                        Status: <?php echo $rowBlogData['GroomingStatus'];?><br>
-                                        <small class="">Remarks: <?php echo $rowBlogData['Remarks'];?></small>
+                                        Name:  <?php echo $rowBlogData['UserName'];?> <br>
+                                        Phone No:  <?php echo $rowBlogData['UserPhone'];?> <br>
+                                        Date:  <?php echo date_format(date_create($rowBlogData['AppointmentDate']), 'd, M Y');?> <br>
+                                        Status: <?php echo $rowBlogData['Remarks'];?><br>
                                     </div>
                                 </div>
                             </div>
@@ -68,13 +70,17 @@
                     </div>
                 <?php
             } else {
-                echo "<h5>No request found..</h5>";
+                echo "<div class='text-center my-5'>
+                    <img src='assets/images/error.png' class='img-fluid' width='360'>
+                    <h3 class='mt-3'>Oops..<br>No boarding request found. <br>Click <a href='book-grooming.php'>here</a> to Book a slot now</h3>
+                </div>";
             }
         ?>
         </div>
     </div>
 </section>
 <?php
+    }
     require_once './assets/pages/footer.php';
 ?>
 

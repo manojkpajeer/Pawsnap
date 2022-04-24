@@ -7,12 +7,12 @@
     require_once './assets/pages/header.php';
     require_once './assets/pages/cart.php';
 
-    $user_email = $_SESSION['user_email'];
+    if(empty($_SESSION['user_email'])){
 
-    if(empty($user_email)){
-
-        echo "<script>alert('Oops, Unable to process..');location.href='../login.php';</script>";
+        echo "<script>location.href='login.php';</script>";
    }
+
+   $user_email = $_SESSION['user_email'];
 
     if(isset($_POST['update'])){
 
@@ -32,54 +32,18 @@
 
                     $ac_password = md5($new_password);
                     if (mysqli_query($conn, "UPDATE login_master SET UserPassword = '$ac_password' WHERE UserEmail = '$_SESSION[user_email]' AND UserRole = 'Customer'")) {
-
-                        ?>
-                        <div class="container">
-                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                                <strong>Yay,</strong> Your password updated successfully.
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        </div>
-                    <?php
+                        echo "<script type='text/javascript'>toastr.success('Your password updated successfully.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
                     } else {
-                        ?>
-                        <div class="container">
-                            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                                <strong>Oops,</strong> Unable to update your password, kindly try after sometimes.
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        </div>
-                    <?php
+                        echo "<script type='text/javascript'>toastr.error('Unable to update your password, kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
                     }
                 } else {
-                    ?>
-                    <div class="container">
-                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Oops,</strong> An invalid current password, Kindly enter valid password.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
+                    echo "<script type='text/javascript'>toastr.error('An invalid current password, Kindly enter valid password.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
                 }
             } else {
-                ?>
-                <div class="container">
-                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Oops,</strong> Unable to process your request, kindly try after sometimes.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            <?php
+                echo "<script type='text/javascript'>toastr.error('Unable to process your request, kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
             }
         }else{
-            ?>
-                <div class="container">
-                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Oops,</strong> The password confirmation does not match.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            <?php
+            echo "<script type='text/javascript'>toastr.error('The password confirmation does not match.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
         }
     }
     

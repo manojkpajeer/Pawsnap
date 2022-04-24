@@ -9,23 +9,9 @@
 
     if(isset($_POST['submit'])){
         if(mysqli_query($conn, "INSERT INTO contact_master (CustomerName, CustomerEmail, Subject, Message, Status, DateCreate, CustomerPhone) VALUES ('$_POST[name]', '$_POST[email]', '$_POST[subject]', '$_POST[message]', 1, NOW(), '$_POST[phone]')")){
-            ?>
-            <div class="container">
-                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                    <strong>Yay,</strong> Your query submitted successfully.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        <?php
+            echo "<script type='text/javascript'>toastr.success('Your query submitted successfully.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true})</script>"; 
         }else{
-            ?>
-            <div class="container">
-                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                    <strong>Oops,</strong> Unable to submit your query, Kindly try after sometimes.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        <?php
+            echo "<script type='text/javascript'>toastr.error('Unable to submit your query, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>"; 
         }
     }
     

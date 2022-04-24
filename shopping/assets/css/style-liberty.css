@@ -21777,7 +21777,7 @@ p.abinfo-para {
     float: right;
 }
 
-.checkout-left-basket ul li:nth-child(5) {
+.checkout-left-basket ul li.total {
     font-size: 1em;
     color: var(--heading-color);
     font-weight: 600;

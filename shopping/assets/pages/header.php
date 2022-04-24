@@ -85,7 +85,7 @@
                             ?>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#Pages" id="personalisedDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Personalised <span class="fa fa-angle-down ms-1"></span>
+                                Personalise <span class="fa fa-angle-down ms-1"></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="personalisedDropdown">
                                     <span class="mt-2"></span>
@@ -125,7 +125,7 @@
                         
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#Pages" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Our Service <span class="fa fa-angle-down ms-1"></span>
+                            Service <span class="fa fa-angle-down ms-1"></span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item pt-2" href="boarding.php">Boarding</a></li>

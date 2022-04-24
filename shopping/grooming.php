@@ -7,23 +7,6 @@
     require_once './assets/pages/header.php';
     require_once './assets/pages/cart.php';
 
-    if(isset($_POST['request'])){
-        if(!empty($_SESSION['is_customer_login'])){
-
-            $customerId = $_SESSION['user_id'];
-
-            if(mysqli_query($conn, "INSERT INTO grooming_request (DateCreate, GroomingStatus, UserName, UserPhone, UserAddress, 
-                AppointmentDate, ServiceId, Remarks, UserId) VALUES (NOW(), 'Requested', '$_POST[name]', '$_POST[phone]', '$_POST[address]', 
-                '$_POST[date]', '$_POST[service]', 'Your request sent to admin.', '$customerId')")){
-                echo "<script>alert('Yay, Your request has been submitted successfully.');location.href='view-request.php';</script>";
-            }else {
-                echo "<script>alert('Oops, Unable to submit your request.');</script>";
-            }
-        }else{
-            echo "<script>alert('Oops, Kindly login to proceed..');</script>";
-        }
-    }
-
 ?>    
     
     <div class="w3l-3-grids" id="about-1">
@@ -50,7 +33,7 @@
     </div>
 
     <section id="team" class="w3lteam">
-        <div class="container py-md-5">
+        <div class="container pt-md-5">
             <div class="title-content text-center">
                 <h6 class="title-subw3hny mb-1">Service</h6>
                 <h3 class="title-w3l mb-5">What We Do</h3>
@@ -87,60 +70,37 @@
         </div>
     </section>
 
-    <section class="w3l-contact-2" id="contact">
-        <div class="container py-lg-4 py-md-3 py-2">
+    <section id="boarding" class=" w3l-3-grids pb-5">
+        <div class="container py-md-5">
             <div class="title-content text-center">
-                <div class="row">
-                    <div class="col-lg-11">
-                        <h6 class="title-subw3hny mb-1">Booking</h6>
-                        <h3 class="title-w3l mb-5">Make an Appointment!</h3>
-                    </div>
-                    <div class="col-lg-1">
-                        <a class="title-subw3hny" href="view-request.php">Your Booking</a>
+                <h6 class="title-subw3hny mb-1">Get Started</h6>
+                <h3 class="title-w3l mb-5">Ready to get started?</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mt-md-0">
+                    <div class="grids3-info position-relative">
+                        <a href="book-grooming.php" class="d-block zoom"><img src="assets/images/book-appointment.jpg" alt="" class="img-fluid news-image"></a>
+                        <div class="w3-grids3-info">
+                            <h4 class="gdnhy-1"><a href="book-grooming.php">Make an <br>Appointment!</a>
+                                <a class="w3item-link btn btn-style mt-4" href="book-grooming.php">
+                                    Book Now <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </h4>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="col-md-6 mt-md-0 mt-4 grids3-info2">
+                    <div class="grids3-info second position-relative">
+                        <a href="view-request.php" class="d-block zoom"><img src="assets/images/view-appointment.jpg" alt="" class="img-fluid news-image"></a>
+                        <div class="w3-grids3-info second">
+                            <h4 class="gdnhy-1"><a href="view-request.php">View Your <br>Appointment</a>
+                                <a class="w3item-link btn btn-style mt-4" href="view-request.php">
+                                    View <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </h4>
 
-            <div class="contact-grids">
-                <div class="contact-right mt-lg-4">
-                    <form method="post" class="signin-form row">
-                        <div class="col-lg-6">
-                            <label class="form-lable">Service Type:</label>
-                            <select class="contact-input" required name="service" onchange="getTotal(this)" id="service">
-                                <option value="">Choose Service</option>
-                                <?php
-                                    $resService = mysqli_query($conn, "SELECT SR_Id, ServiceName FROM service_type WHERE ServiceStatus = 1");
-                                    if(mysqli_num_rows($resService)>0){
-                                        while($rowService = mysqli_fetch_assoc($resService)){
-                                            echo "<option value='$rowService[SR_Id]'>$rowService[ServiceName]</option>";
-                                        }
-                                    }
-                                ?>
-                            </select>
                         </div>
-                        <div class="col-lg-6">
-                            <label class="form-lable">Service Price:</label>
-                            <input type="text" name="total" class="contact-input" id="total" readonly value="0.00">
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-lable">Appointment Date:</label>
-                            <input type="date" name="date" value="<?php echo date('Y-m-d');?>" class="contact-input" required="" min<?php echo date('Y-m-d');?>>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-lable">Your Name:</label>
-                            <input type="text" name="name" class="contact-input" required="" placeholder="Enter your name.">
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-lable">Your Phone No:</label>
-                            <input type="text" name="phone" class="contact-input" required="" placeholder="Enter your phone number." pattern="[0-9]{6,13}" maxlength="13" title="Kindly enter valid phone number.">
-                        </div>
-                        <div class="form-input"><label class="form-lable">Your Address:</label>
-                            <textarea name="address" placeholder="Enter your address." required=""></textarea>
-                        </div>
-                        <div class="submit-w3l-button text-lg-right">
-                            <button class="btn btn-style btn-primary" name="request">Submit request</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

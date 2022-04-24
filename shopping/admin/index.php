@@ -10,7 +10,7 @@
 
     if(isset($_POST['login'])){
 
-        $password = $_POST['password'];
+        $password = md5($_POST['password']);
         $email = $_POST['email'];
 
         $res = mysqli_query($conn, "SELECT login_master.UserPassword, admin_master.FullName, admin_master.AM_Id FROM login_master JOIN admin_master ON admin_master.EmailId = login_master.UserEmail WHERE login_master.UserEmail = '$email' AND admin_master.Status = 1 AND  login_master.UserRole = 'Admin'");

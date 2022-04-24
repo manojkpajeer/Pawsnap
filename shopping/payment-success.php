@@ -4,8 +4,6 @@
     session_start();
 
     require_once '../assets/config/connect.php';
-
-    $orderId = $_GET['success'];
     
 ?>
 
@@ -231,7 +229,7 @@
 
     <div class="card">
         <?php
-            if(empty($orderId)){
+            if(empty($_GET['success'])){
                 ?>
                 <div class="info">
                     <div class="row">
@@ -240,6 +238,7 @@
                 </div>
                 <?php
             } else {
+                $orderId = $_GET['success'];
                 
                 $resPaymentData = mysqli_query($conn, "SELECT * FROM payment_master WHERE OrderId = '$orderId'");
                 if(mysqli_num_rows($resPaymentData)>0){

@@ -1,51 +1,6 @@
 <?php
 
     session_start();
-
-    if(isset($_POST['add_to_cart'])) {
-        
-        $pid = $_POST['pid'];
-        $pname = $_POST['pname'];
-        $pprice = $_POST['pprice'];
-        $pimage = $_POST['pimage'];
-
-        $itemArray = array(
-            $pid => array(
-                'prodictId' => $pid, 
-                'productName' => $pname, 
-                'productQuantity' => 1, 
-                'productPrice' => $pprice,
-                'productImage' => $pimage
-            )
-        );
-        
-
-        if (empty($_SESSION["cart_item"])) {
-            
-            $_SESSION["cart_item"] = $itemArray;
-            // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
-        } else {
-            
-            if (in_array($pid, array_keys($_SESSION["cart_item"]))) {
-                
-                foreach($_SESSION["cart_item"] as $k => $v) {
-
-                    if($pid == $k) {
-                        if(empty($_SESSION["cart_item"][$k]["productQuantity"])) {
-                            $_SESSION["cart_item"][$k]["productQuantity"] = 0;
-                        }
-                        $_SESSION["cart_item"][$k]["productQuantity"] += 1;
-
-                        // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
-                    }
-                }
-            } else {
-                
-                $_SESSION["cart_item"] += $itemArray;
-                // echo "<script>alert('Yay, Product added to your cart..');</script>"; 
-            }
-        }
-    }
     
     require_once '../assets/config/connect.php';
     require_once './assets/pages/header-link.php';

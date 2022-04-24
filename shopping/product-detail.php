@@ -30,14 +30,7 @@
         if (empty($_SESSION["cart_item"])) {
             
             $_SESSION["cart_item"] = $itemArray;
-            ?>
-                <div class="container">
-                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            <?php
+            echo "<script type='text/javascript'>toastr.success('Product added to cart.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='checkout.php'}})</script>"; 
         } else {
             
             if (in_array($pid, array_keys($_SESSION["cart_item"]))) {
@@ -49,27 +42,13 @@
                             $_SESSION["cart_item"][$k]["productQuantity"] = 0;
                         }
                         $_SESSION["cart_item"][$k]["productQuantity"] += $pquantity;
-                        ?>
-                        <div class="container">
-                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                                <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        </div>
-                    <?php
+                        echo "<script type='text/javascript'>toastr.success('Product added to cart.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='checkout.php'}})</script>"; 
                     }
                 }
             } else {
                 
                 $_SESSION["cart_item"] += $itemArray;
-                ?>
-                <div class="container">
-                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Yay,</strong> Product added to your cart, Click <a href="checkout.php">here</a> to view.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            <?php
+                echo "<script type='text/javascript'>toastr.success('Product added to cart.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='checkout.php'}})</script>"; 
             }
         }
     }
@@ -86,34 +65,19 @@
 
             if(mysqli_query($conn, "INSERT INTO ecom_sales (CustomerId, OrderId, Status, DateCreate, Remarks, PaymentId) VALUES ('$customerId', '$OrderId', 'Order Initiated', NOW(), 'A new order has been initiated by customer', 0)")){
 
-                if(mysqli_query($conn, "INSERT INTO ecom_sales_temp (OrderId, ProductId, Quantity, Status, DateCreate, Message) VALUES ('$OrderId', '$_POST[pid]', '$_POST[pquantity]', 1, NOW())")){
+                if(mysqli_query($conn, "INSERT INTO ecom_sales_temp (OrderId, ProductId, Quantity, Status, DateCreate, Message) VALUES ('$OrderId', '$_POST[pid]', '$_POST[pquantity]', 1, NOW(), '$message')")){
 
                     echo "<script>location.href='order-confirm.php?source=$OrderId';</script>";
                 } else {
-
-                    ?>
-                    <div class="container">
-                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
+                echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>"; 
                 }
             } else {
-
-                ?>
-                <div class="container">
-                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            <?php
+                echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>"; 
             }
         } else {
 
-            echo "<script>location.href='login.php';</script>";
+            echo "<script type='text/javascript'>toastr.error('Kindly login to proceed.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='login.php'}})</script>"; 
+
         }
     }
 
@@ -177,6 +141,8 @@
                                                 </div>
                                             </div>
                                             <?php
+                                        } else{
+                                            echo "<input type='hidden' name='message' value='N/A'>";
                                         }
                                         ?>
                                         <div class="description-apt d-grid mt-4"> 

@@ -14,34 +14,13 @@
         if($password == $confirm_password){
             $new_password = md5($password);
             if(mysqli_query($conn, "UPDATE login_master SET UserPassword = '$new_password' WHERE LM_Id = '$resData[LM_Id]'")){
-                ?>
-                <div class="container">
-                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Yay,</strong> Your password updated successfully, Click <a href="login.php">here</a> to Login.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            <?php
+                echo "<script type='text/javascript'>toastr.success('Your password updated successfully.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='login.php'}})</script>"; 
             }else{
-                ?>
-                <div class="container">
-                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Oops,</strong> Unable to reset your password.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            <?php
+                echo "<script type='text/javascript'>toastr.error('Unable to reset your password.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";
             }
 
         }else{
-            ?>
-                <div class="container">
-                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Oops,</strong> The password confirmation does not match.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            <?php
+            echo "<script type='text/javascript'>toastr.error('The password confirmation does not match.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";
         }
         
     }

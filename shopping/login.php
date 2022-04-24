@@ -28,28 +28,19 @@
                 $_SESSION['user_email'] = $email;
                 $_SESSION['is_customer_login'] = true;
 
-                echo "<script>location.href='index.php';</script>";
+                $source = "index.php";
+
+                if(!empty($_GET['source'])){
+                    $source = $_GET['source'] . ".php";
+                }
+                echo "<script>location.href='$source';</script>";
             }
             else{
-                ?>
-                <div class="container">
-                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Oops,</strong> An invalid password you entered.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            <?php   
+                echo "<script type='text/javascript'>toastr.error('An invalid password you entered.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
             }            
         }
-        else{  
-            ?>
-            <div class="container">
-                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                    <strong>Oops,</strong> An email does not exist, Kindly enter valid email id.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        <?php     
+        else{ 
+            echo "<script type='text/javascript'>toastr.error('An email does not exist, Kindly enter valid email id.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";    
         }
     }
     

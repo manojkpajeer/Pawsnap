@@ -47,43 +47,15 @@
                 $mail->Body = $bodyMessage;
             
                 if ($mail->send()) {
-                    ?>
-                    <div class="container">
-                        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Yay,</strong> We have sent an email to recover your password, Kindly check your email.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
+                    echo "<script type='text/javascript'>toastr.success('We have sent an email to recover your password, Kindly check your email.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true})</script>";
                 } else {
-                    ?>
-                    <div class="container">
-                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
+                    echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";
                 }
             } catch (Exception $e) {
-                ?>
-                    <div class="container">
-                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
+                echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";
             }
         }else{
-            ?>
-            <div class="container">
-                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                    <strong>Oops,</strong> An email does not exist, Kindly enter valid email id.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        <?php
+            echo "<script type='text/javascript'>toastr.error('An email does not exist, Kindly enter valid email id.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";
         }
     }
     

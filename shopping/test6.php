@@ -107,7 +107,7 @@ body,html {
     <div class="pos-receipt-print">
         <div class="pos-receipt">
             <h5 class="pos-receipt-center-align">
-                PAWS FUR AND TAIL
+                PAWS AND FUR
             </h5>
             <div class="aku-pos-receipt-header" style="font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.5;margin-top:10px;">
                 <div class="aku-header-line">

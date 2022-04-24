@@ -19,14 +19,7 @@
 
         $res = mysqli_query($conn, "SELECT CM_Id FROM customer_master WHERE CustomerEmail = '$email' AND Status = 1");
         if (mysqli_num_rows($res)>0) {
-            ?>
-            <div class="container">
-                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                    <strong>Oops,</strong> An Email Id already in use, Kindly choose different email id.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        <?php   
+            echo "<script type='text/javascript'>toastr.error('An Email Id already in use, Kindly choose different email id.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
         }
         else{
 
@@ -36,36 +29,14 @@
                 $password = md5($_POST['password']);
 
                 if (mysqli_query($conn, "INSERT INTO login_master (UserEmail, UserPassword, UserRole) VALUES ('$email', '$password', 'Customer')")) {
-                                            
-                    ?>
-                    <div class="container">
-                        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Yay,</strong> You have registered successfully, Click <a href="login.php">here</a> to Login.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
+                    echo "<script type='text/javascript'>toastr.success('You have registered successfully.', 'Success!', {positionClass:'toast-bottom-right', closeButton:true, onclick: function() {location.href='login.php'}})</script>"; 
 
                 } else {
-                    ?>
-                    <div class="container">
-                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                            <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                <?php
+                    echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
                 }    
             }
             else{
-                ?>
-                <div class="container">
-                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="success-alert">
-                        <strong>Oops,</strong> Unable to process your request, Kindly try after sometimes.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            <?php
+                echo "<script type='text/javascript'>toastr.error('Unable to process your request, Kindly try after sometimes.', 'Sorry!', {positionClass:'toast-bottom-right', closeButton:true})</script>";      
             }
         }     
     }
